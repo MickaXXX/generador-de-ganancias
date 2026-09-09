@@ -79,6 +79,42 @@ comprobar(deteccion.numeros[0] === 1234.56, `formato chileno US$ 1.234,56 -> ${d
 comprobar(deteccion.numeros[1] === 1234.56, `formato ingles 1,234.56 -> ${deteccion.numeros[1]}`);
 comprobar(deteccion.numeros[3] === null && deteccion.numeros[4] === null && deteccion.numeros[5] === null, "celdas vacias o con texto -> null");
 
+// --- la plantilla que se le manda al cliente debe reconocerse sola ----------
+const plantilla = join(RAIZ, "producto", "Plantilla-Datos-Minima.xlsx");
+if (existsSync(plantilla)) {
+  const { default: XLSX } = await import("xlsx");
+  const libro = XLSX.readFile(plantilla);
+  const hoja = XLSX.utils.sheet_to_json(libro.Sheets["Datos"], { defval: null });
+  const encabezados = Object.keys(hoja[0]).filter((h) => !h.startsWith("__EMPTY"));
+
+  const mapeo = await pagina.evaluate((h) => window.__critispare.detectarMapeo(h), encabezados);
+  const obligatorios = ["sku", "precio", "consumoAnual", "leadTime"];
+  const opcionales = ["descripcion", "categoria", "criticidadEquipo", "horasParada", "proveedores", "stockActual"];
+  comprobar(obligatorios.every((c) => mapeo[c]), `la plantilla del cliente mapea los 4 campos obligatorios: ${obligatorios.map((c) => mapeo[c] || "FALTA").join(", ")}`);
+  comprobar(opcionales.every((c) => mapeo[c]), `y tambien los 6 opcionales: ${opcionales.filter((c) => !mapeo[c]).join(", ") || "todos"}`);
+
+  const filas = hoja.filter((f) => f[mapeo.sku]);
+  const analisis = await pagina.evaluate(({ filas, mapeo }) => {
+    const { CAMPOS, aNumero } = window.__critispare;
+    const preparadas = filas.map((f) => {
+      const salida = {};
+      for (const campo of CAMPOS) {
+        const columna = mapeo[campo.clave];
+        if (columna) salida[campo.clave] = campo.texto ? f[columna] : aNumero(f[columna]);
+      }
+      return salida;
+    });
+    try {
+      const r = window.__critispare.analizar(preparadas);
+      return { ok: true, n: r.items.length, clases: r.items.map((i) => i.clase) };
+    } catch (e) {
+      return { ok: false, error: e.message };
+    }
+  }, { filas, mapeo });
+  comprobar(analisis.ok && analisis.n === filas.length,
+    `las filas de ejemplo de la plantilla se analizan sin error (${analisis.n ?? analisis.error} de ${filas.length}, clases ${analisis.clases?.join("/")})`);
+}
+
 // --- carga del ejemplo y calculo -------------------------------------------
 await pagina.click("#btn-ejemplo");
 await pagina.waitForSelector("#panel-mapeo:not(.oculto)");

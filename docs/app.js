@@ -211,6 +211,7 @@ function dibujarResultados() {
     <div class="entre" style="margin-bottom:18px">
       <h2 style="margin:0">3. Resultado del análisis</h2>
       <div class="fila">
+        <span class="silencio" id="aviso-exportar"></span>
         <button class="boton boton-secundario boton-fino" id="btn-exportar" ${estado.pro ? "" : "disabled"}>
           ⬇ Exportar a Excel${estado.pro ? "" : " (Pro)"}
         </button>
@@ -344,7 +345,22 @@ const escapar = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
 // Exportacion a Excel (solo Pro)
 // ---------------------------------------------------------------------------
 
-function exportarExcel() {
+/**
+ * Algunos visores (por ejemplo el de Artifacts) bloquean las descargas directas
+ * del navegador y entregan los archivos por su propia capacidad. Si esa via
+ * existe se usa; si no, se descarga como en cualquier sitio normal.
+ */
+async function guardadorDelVisor() {
+  if (typeof window.claude?.use !== "function") return null;
+  try {
+    const descargas = await window.claude.use("downloads");
+    return descargas ? (peticion) => descargas.save(peticion) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function exportarExcel() {
   if (!estado.pro || !estado.resultado) return;
   const { items, pesos, familias, resumen } = estado.resultado;
 
@@ -405,7 +421,29 @@ function exportarExcel() {
     Criterio: p.etiqueta, Sentido: p.sentido, "Peso (%)": Number((p.peso * 100).toFixed(2)),
   }))), "Pesos");
 
-  XLSX.writeFile(libro, `CritiSpare-${new Date().toISOString().slice(0, 10)}.xlsx`);
+  const nombre = `CritiSpare-${new Date().toISOString().slice(0, 10)}.xlsx`;
+  const estadoExport = $("#aviso-exportar");
+  const guardar = await guardadorDelVisor();
+
+  if (!guardar) {
+    XLSX.writeFile(libro, nombre);
+    return;
+  }
+
+  if (estadoExport) estadoExport.textContent = "Preparando el archivo…";
+  try {
+    const bytes = XLSX.write(libro, { bookType: "xlsx", type: "array" });
+    await guardar({ filename: nombre, data: new Blob([bytes]) });
+    if (estadoExport) estadoExport.textContent = `Guardado: ${nombre}`;
+  } catch (error) {
+    const motivos = {
+      declined: "Cancelaste la descarga.",
+      rate_limited: "Ya hay una descarga en curso. Intenta de nuevo en unos segundos.",
+    };
+    if (estadoExport) {
+      estadoExport.textContent = motivos[error?.code] || "No se pudo entregar el archivo aquí.";
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -530,4 +568,4 @@ if (document.readyState === "loading") document.addEventListener("DOMContentLoad
 else iniciar();
 
 // Expuesto para las pruebas automatizadas de la interfaz.
-window.__critispare = { estado, detectarMapeo, aNumero, CAMPOS };
+window.__critispare = { estado, detectarMapeo, aNumero, CAMPOS, analizar };

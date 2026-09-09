@@ -1,3 +1,4 @@
 node_modules/
 .claves/
 capturas/*.xlsx
+dist/
