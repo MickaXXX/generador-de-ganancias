@@ -1,0 +1,201 @@
+SKU,Descripcion,Categoria,Equipo,Origen,Unidad,Almacen,Precio unitario,Consumo anual,Lead time (dias),Criticidad equipo (1-5),Horas parada si falla,N proveedores,Stock actual
+RB-10000,Membrana de osmosis inversa 8040 baja presion,Tratamiento de agua,Planta RO,Importado,un,BOD-CENTRAL,909.58,9,86,4,21,2,2
+RB-10001,Portamembrana FRP 8040 300 psi,Tratamiento de agua,Planta RO,Importado,un,BOD-CENTRAL,1016.16,1,90,4,28,2,1
+RB-10002,"Cartucho filtrante bobinado 5 um 40""",Tratamiento de agua,Prefiltracion RO,Nacional,un,BOD-CENTRAL,13.29,408,10,3,25,4,257
+RB-10003,"Cartucho filtrante plisado 1 um 30""",Tratamiento de agua,Pulido final,Nacional,un,BOD-CENTRAL,35.83,136,11,3,15,4,45
+RB-10004,Resina cationica fuerte para ablandador,Tratamiento de agua,Ablandador,Importado,saco 25 L,BOD-CENTRAL,267.3,6,61,3,11,3,0
+RB-10005,Resina anionica base fuerte,Tratamiento de agua,Desmineralizador,Importado,saco 25 L,BOD-CENTRAL,486.98,2,67,3,19,2,0
+RB-10006,Valvula multipuerto automatica ablandador,Tratamiento de agua,Ablandador,Importado,un,BOD-CENTRAL,1768.42,0,84,3,24,2,0
+RB-10007,Lampara germicida UV 320 W,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,370.12,11,47,4,32,2,4
+RB-10008,Funda de cuarzo para lampara UV,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,146.95,3,46,4,16,2,1
+RB-10009,Balastro electronico UV,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,763.74,1,70,4,29,1,1
+RB-10010,Bomba centrifuga multietapa 15 kW alta presion,Tratamiento de agua,Bombeo RO,Importado,un,BOD-CENTRAL,7464.8,0,111,4,17,2,1
+RB-10011,Sensor de conductividad inductivo,Tratamiento de agua,Control RO,Importado,un,BOD-CENTRAL,815.94,1,57,3,21,3,1
+RB-10012,Electrodo de pH con cable integrado,Tratamiento de agua,Control de proceso,Importado,un,BOD-CENTRAL,221.04,20,31,3,5,4,0
+RB-10013,Bomba dosificadora de diafragma 10 L/h,Tratamiento de agua,Dosificacion,Importado,un,BOD-CENTRAL,1628.69,1,64,3,18,3,0
+RB-10014,Diafragma PTFE para bomba dosificadora,Tratamiento de agua,Dosificacion,Importado,un,BOD-CENTRAL,153.64,18,47,3,8,3,10
+RB-10015,Manguera de succion PVC reforzada dosificacion,Tratamiento de agua,Dosificacion,Nacional,m,BOD-CENTRAL,7.9,89,9,2,11,4,26
+RB-10016,Medio filtrante antracita,Tratamiento de agua,Filtro multimedia,Nacional,saco 25 kg,BOD-CENTRAL,188.18,1,27,3,11,2,0
+RB-10017,"Arena silicea filtrante 0,6 mm",Tratamiento de agua,Filtro multimedia,Nacional,saco 25 kg,BOD-CENTRAL,35.72,6,19,3,10,4,0
+RB-10018,Carbon activado granular vegetal,Tratamiento de agua,Filtro de carbon,Importado,saco 25 kg,BOD-CENTRAL,278.41,8,43,3,9,2,3
+RB-10019,Sello mecanico sanitario simple 35 mm,Jaraberia,Bomba de jarabe,Importado,un,BOD-CENTRAL,559.93,13,59,4,7,1,3
+RB-10020,"Bomba centrifuga sanitaria 5,5 kW inox 316",Jaraberia,Trasiego de jarabe,Importado,un,BOD-CENTRAL,4259.55,0,123,4,19,2,1
+RB-10021,Rodete inox para bomba sanitaria,Jaraberia,Trasiego de jarabe,Importado,un,BOD-CENTRAL,1017.38,1,103,4,27,2,0
+RB-10022,Placa de intercambiador de calor AISI 316,Jaraberia,Intercambiador de placas,Importado,un,BOD-CENTRAL,149.39,33,62,4,18,2,13
+RB-10023,Junta NBR para placa de intercambiador,Jaraberia,Intercambiador de placas,Importado,un,BOD-CENTRAL,23.54,245,50,4,17,3,108
+RB-10024,Valvula mariposa sanitaria DN65 clamp,Jaraberia,Distribucion de jarabe,Importado,un,BOD-CENTRAL,190.56,24,36,3,19,2,28
+RB-10025,Kit de sellos EPDM para valvula sanitaria DN65,Jaraberia,Distribucion de jarabe,Importado,un,BOD-CENTRAL,26.42,131,36,3,25,3,19
+RB-10026,Agitador de paletas 3 kW con reductor,Jaraberia,Tanque de jarabe simple,Importado,un,BOD-CENTRAL,4713.72,0,118,3,17,2,1
+RB-10027,Reten de eje para agitador sanitario,Jaraberia,Tanque de jarabe simple,Importado,un,BOD-CENTRAL,252.1,4,58,3,6,2,1
+RB-10028,Filtro de bolsa 100 um sanitario,Jaraberia,Filtracion de jarabe,Nacional,un,BOD-CENTRAL,13.61,338,15,3,17,4,54
+RB-10029,Caudalimetro masico Coriolis DN50,Jaraberia,Dosificacion de jarabe,Importado,un,BOD-CENTRAL,15753.24,0,143,5,25,1,2
+RB-10030,Refractometro en linea Brix,Jaraberia,Control de Brix,Importado,un,BOD-CENTRAL,12468.58,0,114,4,13,1,1
+RB-10031,"Manguera sanitaria silicona 2"" con clamp",Jaraberia,Trasiego,Importado,m,BOD-CENTRAL,126.12,26,41,3,8,3,8
+RB-10032,"Empaquetadura clamp EPDM 2""",Jaraberia,Uniones sanitarias,Nacional,un,BOD-CENTRAL,4.36,427,12,3,10,5,140
+RB-10033,Valvula moduladora de CO2 con posicionador,Carbonatacion,Carbo-cooler,Importado,un,BOD-CENTRAL,3887.36,0,137,5,23,1,1
+RB-10034,Sensor de CO2 disuelto en linea,Carbonatacion,Control de carbonatacion,Importado,un,BOD-CENTRAL,8654,0,120,4,22,1,1
+RB-10035,Bomba de vacio de anillo liquido 4 kW,Carbonatacion,Desaireador,Importado,un,BOD-CENTRAL,6376.71,0,115,4,27,2,1
+RB-10036,Boquilla de aspersion desaireador inox,Carbonatacion,Desaireador,Importado,un,BOD-CENTRAL,126.13,10,76,4,11,2,4
+RB-10037,Transmisor de presion sanitario 0-10 bar,Carbonatacion,Mezclador,Importado,un,BOD-CENTRAL,1218.51,4,80,4,8,2,1
+RB-10038,Lampara infrarroja de horno 2500 W,Sopladora PET,Horno de precalentamiento,OEM,un,BOD-LINEA,236.42,82,120,5,30,1,31
+RB-10039,Reflector ceramico de horno,Sopladora PET,Horno de precalentamiento,OEM,un,BOD-LINEA,271.53,11,117,5,29,1,5
+RB-10040,Molde de cavidad PET 500 ml,Sopladora PET,Estacion de soplado,OEM,un,BOD-LINEA,15239.96,0,132,5,9,1,1
+RB-10041,Fondo de molde intercambiable PET,Sopladora PET,Estacion de soplado,OEM,un,BOD-LINEA,4377.78,2,188,5,23,1,1
+RB-10042,Valvula de soplado de alta presion 40 bar,Sopladora PET,Estacion de soplado,OEM,un,BOD-LINEA,2370.01,4,138,5,8,1,1
+RB-10043,Kit de sellos para valvula de soplado,Sopladora PET,Estacion de soplado,OEM,un,BOD-LINEA,358.09,10,123,5,11,1,2
+RB-10044,Varilla de estiraje con guia,Sopladora PET,Estacion de soplado,OEM,un,BOD-LINEA,902.02,5,126,5,42,1,2
+RB-10045,Pinza de transferencia de preformas,Sopladora PET,Rueda de transferencia,OEM,un,BOD-LINEA,483.76,8,110,5,20,1,0
+RB-10046,Estrella de transferencia de botellas,Sopladora PET,Salida de sopladora,OEM,un,BOD-LINEA,1845.66,3,116,5,28,1,2
+RB-10047,Mandril de sujecion de preforma,Sopladora PET,Horno de precalentamiento,OEM,un,BOD-LINEA,172.92,43,141,5,21,1,8
+RB-10048,Filtro coalescente aire alta presion 40 bar,Sopladora PET,Aire de soplado,Importado,un,BOD-LINEA,893.73,11,91,5,34,2,7
+RB-10049,Elemento separador aceite compresor alta,Sopladora PET,Compresor de alta presion,Importado,un,BOD-LINEA,1781.74,4,80,5,36,2,2
+RB-10050,Kit mayor de reparacion compresor 40 bar,Sopladora PET,Compresor de alta presion,Importado,un,BOD-LINEA,28188.52,0,186,5,10,1,0
+RB-10051,Sensor de temperatura pirometro infrarrojo,Sopladora PET,Horno de precalentamiento,OEM,un,BOD-LINEA,1703.78,1,151,5,17,1,2
+RB-10052,Valvula de llenado electroneumatica completa,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,4661.36,3,183,5,28,1,2
+RB-10053,Kit de juntas para valvula de llenado,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,67.74,125,99,5,13,1,117
+RB-10054,Sonda de nivel de llenado inox,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,465.89,43,156,5,15,1,16
+RB-10055,Centrador de botella con resorte,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,224.67,21,108,5,9,1,24
+RB-10056,Estrella de entrada a llenadora,Llenadora,Transferencia de entrada,OEM,un,BOD-LINEA,1501.43,2,156,5,18,1,1
+RB-10057,Tornillo sinfin de temporizacion,Llenadora,Transferencia de entrada,OEM,un,BOD-LINEA,2015.68,1,114,5,33,1,1
+RB-10058,Guia lateral de botella UHMW,Llenadora,Transferencia de entrada,Nacional,m,BOD-LINEA,65.44,77,16,4,16,2,76
+RB-10059,Rodamiento de rodillos de mesa rotativa,Llenadora,Llenadora rotativa,Importado,un,BOD-LINEA,2420.46,1,112,5,27,2,1
+RB-10060,Junta rotativa de distribucion de producto,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,5358.42,0,176,5,13,1,2
+RB-10061,Servomotor de accionamiento de llenadora,Llenadora,Accionamiento principal,OEM,un,BOD-LINEA,10628.22,0,163,5,36,1,2
+RB-10062,Anillo de desgaste de campana de llenado,Llenadora,Llenadora rotativa,OEM,un,BOD-LINEA,51.73,339,91,5,30,1,126
+RB-10063,Cabezal de torque magnetico regulable,Capsuladora,Capsuladora rotativa,OEM,un,BOD-LINEA,2712.32,2,159,5,25,1,0
+RB-10064,Embrague magnetico de cabezal,Capsuladora,Capsuladora rotativa,OEM,un,BOD-LINEA,821.05,3,138,5,8,1,1
+RB-10065,Mordaza de sujecion de tapa,Capsuladora,Capsuladora rotativa,OEM,un,BOD-LINEA,128.1,35,99,5,15,1,1
+RB-10066,Resorte de compresion de cabezal,Capsuladora,Capsuladora rotativa,OEM,un,BOD-LINEA,32.93,158,106,5,20,2,45
+RB-10067,Orientador de tapas con soplador,Capsuladora,Alimentacion de tapas,OEM,un,BOD-LINEA,4113.47,0,147,4,28,1,2
+RB-10068,Riel de bajada de tapas inox,Capsuladora,Alimentacion de tapas,Nacional,un,BOD-LINEA,397.09,2,37,4,8,2,0
+RB-10069,Sensor inductivo de presencia de tapa,Capsuladora,Alimentacion de tapas,Importado,un,BOD-LINEA,97.91,22,31,4,10,4,0
+RB-10070,Rodillo de cola cromado,Etiquetadora,Etiquetadora de cola fria,OEM,un,BOD-CENTRAL,1229.45,1,135,4,10,1,2
+RB-10071,Paleta de cola de goma,Etiquetadora,Etiquetadora de cola fria,OEM,un,BOD-CENTRAL,238.48,16,149,4,9,1,4
+RB-10072,Cepillo de presion de etiqueta,Etiquetadora,Estacion de aplicacion,OEM,un,BOD-CENTRAL,85.71,21,119,4,26,2,4
+RB-10073,Esponja de aplicacion de etiqueta,Etiquetadora,Estacion de aplicacion,Nacional,un,BOD-CENTRAL,30.82,174,24,4,29,3,3
+RB-10074,Bomba de hotmelt con manguera calefaccionada,Etiquetadora,Sistema hotmelt,Importado,un,BOD-CENTRAL,5699.79,0,132,4,17,2,1
+RB-10075,Boquilla aplicadora de hotmelt,Etiquetadora,Sistema hotmelt,Importado,un,BOD-CENTRAL,508.28,14,76,4,30,2,5
+RB-10076,Resistencia calefactora de tanque hotmelt,Etiquetadora,Sistema hotmelt,Importado,un,BOD-CENTRAL,352.71,13,63,4,31,1,0
+RB-10077,Filtro de hotmelt 100 mesh,Etiquetadora,Sistema hotmelt,Importado,un,BOD-CENTRAL,58.12,47,62,4,8,3,11
+RB-10078,Cuchilla de corte de etiqueta rotativa,Etiquetadora,Modulo de corte,OEM,un,BOD-CENTRAL,966.28,9,124,4,33,1,0
+RB-10079,Correa dentada de transmision etiquetadora,Etiquetadora,Transmision,Importado,un,BOD-CENTRAL,250.34,11,46,4,12,3,5
+RB-10080,Plato giratorio de botella,Etiquetadora,Carrusel,OEM,un,BOD-CENTRAL,753.95,9,136,4,17,1,4
+RB-10081,"Cadena de charnela acetal 3"" 1 m",Transporte,Transportador de botellas,Nacional,m,BOD-CENTRAL,78.92,268,17,4,15,4,68
+RB-10082,"Cadena de charnela inox 3,25""",Transporte,Transportador de cajas,Importado,m,BOD-CENTRAL,171.37,33,39,4,12,3,9
+RB-10083,Guia de deslizamiento UHMW 40x10,Transporte,Transportador de botellas,Nacional,m,BOD-CENTRAL,17.15,892,16,3,10,5,291
+RB-10084,"Motorreductor 0,55 kW con brida",Transporte,Accionamiento de transportador,Importado,un,BOD-CENTRAL,673.17,8,69,3,8,3,7
+RB-10085,Pinon de accionamiento acetal Z=21,Transporte,Accionamiento de transportador,Nacional,un,BOD-CENTRAL,76.13,25,23,3,10,4,3
+RB-10086,Rodamiento rigido de bolas 6205 2RS,Transporte,Rodillos de transporte,Importado,un,BOD-CENTRAL,16.39,446,22,3,23,5,98
+RB-10087,Fotocelda reflex M18 con reflector,Transporte,Control de acumulacion,Importado,un,BOD-CENTRAL,125.19,83,23,3,7,4,49
+RB-10088,Boquilla de lubricacion de cadena,Transporte,Lubricacion de cadenas,Nacional,un,BOD-CENTRAL,22.51,184,18,2,7,4,18
+RB-10089,Bomba dosificadora de lubricante de cadena,Transporte,Lubricacion de cadenas,Importado,un,BOD-CENTRAL,1186.5,1,76,3,19,2,0
+RB-10090,Curva de transporte con guia lateral,Transporte,Transportador de botellas,Nacional,un,BOD-CENTRAL,429.33,7,32,3,22,3,4
+RB-10091,Resistencia de tunel de termocontraccion,Empacadora,Tunel de retractil,Importado,un,BOD-CENTRAL,226.42,26,68,4,28,3,0
+RB-10092,Ventilador de recirculacion de tunel,Empacadora,Tunel de retractil,Importado,un,BOD-CENTRAL,1331.27,1,104,4,13,2,2
+RB-10093,Correa de malla inox de tunel,Empacadora,Tunel de retractil,Importado,un,BOD-CENTRAL,2831.96,0,80,4,31,2,0
+RB-10094,Cuchilla de sellado transversal,Empacadora,Envolvedora de film,OEM,un,BOD-CENTRAL,827.57,5,107,4,30,1,2
+RB-10095,Teflon adhesivo para barra de sellado,Empacadora,Envolvedora de film,Nacional,m,BOD-CENTRAL,35.93,106,19,4,8,4,4
+RB-10096,Rodillo desbobinador de film,Empacadora,Envolvedora de film,OEM,un,BOD-CENTRAL,932.64,1,135,4,8,1,0
+RB-10097,Ventosa de vacio 60 mm con fuelle,Empacadora,Cabezal de agrupacion,Importado,un,BOD-CENTRAL,39.45,45,33,4,32,2,13
+RB-10098,Pinza neumatica de capa completa,Paletizado,Paletizador,OEM,un,BOD-CENTRAL,4350.67,0,176,4,29,1,2
+RB-10099,Cilindro neumatico ISO 15552 63x300,Paletizado,Paletizador,Importado,un,BOD-CENTRAL,226.12,24,51,4,12,3,3
+RB-10100,Servo drive de eje vertical 5 kW,Paletizado,Paletizador,OEM,un,BOD-CENTRAL,9726.99,0,174,4,23,1,1
+RB-10101,Encoder absoluto multivuelta,Paletizado,Paletizador,Importado,un,BOD-CENTRAL,1940.34,1,69,4,27,2,2
+RB-10102,Cadena de rodillos ASA 80 simple,Paletizado,Transporte de pallets,Nacional,m,BOD-CENTRAL,63.65,48,17,3,14,3,17
+RB-10103,Rodillo motorizado de transporte de pallet,Paletizado,Transporte de pallets,Nacional,un,BOD-CENTRAL,210.72,18,38,3,11,3,0
+RB-10104,Film stretch pre-estirado 23 um,Paletizado,Enfardadora,Nacional,rollo,BOD-CENTRAL,32.22,444,14,3,20,5,60
+RB-10105,Portabotellas de lavadora (bolsillo),Lavadora PRB,Lavadora de botellas,OEM,un,BOD-LINEA,85.89,240,110,5,39,1,26
+RB-10106,Cadena de transporte de lavadora,Lavadora PRB,Lavadora de botellas,OEM,m,BOD-LINEA,421.58,11,118,5,15,1,5
+RB-10107,Boquilla de inyeccion interior inox,Lavadora PRB,Zona de enjuague,OEM,un,BOD-LINEA,65.26,85,120,5,23,1,22
+RB-10108,Bomba centrifuga de sosa 11 kW,Lavadora PRB,Circuito de sosa,Importado,un,BOD-LINEA,4473.16,0,86,5,36,1,0
+RB-10109,Sello mecanico resistente a sosa,Lavadora PRB,Circuito de sosa,Importado,un,BOD-LINEA,740.38,5,75,5,28,1,5
+RB-10110,Filtro de etiquetas rotativo,Lavadora PRB,Extraccion de etiquetas,OEM,un,BOD-LINEA,3494.7,0,119,4,19,1,2
+RB-10111,Serpentin de calefaccion de bano,Lavadora PRB,Bano de sosa,OEM,un,BOD-LINEA,3952.64,0,185,5,29,1,0
+RB-10112,Sonda de conductividad para sosa,Lavadora PRB,Control de concentracion,Importado,un,BOD-LINEA,773.77,2,79,4,15,2,1
+RB-10113,Boquilla de aspersion de tunel pasteurizador,Pasteurizador,Tunel pasteurizador,Importado,un,BOD-CENTRAL,25.93,237,84,4,21,3,260
+RB-10114,"Bomba de recirculacion 7,5 kW",Pasteurizador,Tunel pasteurizador,Importado,un,BOD-CENTRAL,3581.35,0,102,4,15,2,0
+RB-10115,Cadena de transporte de pasteurizador,Pasteurizador,Tunel pasteurizador,OEM,m,BOD-CENTRAL,399.72,12,103,4,11,1,2
+RB-10116,"Valvula de control de vapor 2""",Pasteurizador,Calefaccion,Importado,un,BOD-CENTRAL,3220.13,0,102,4,7,2,2
+RB-10117,Sonda PT100 sanitaria con vaina,Pasteurizador,Control de temperatura,Importado,un,BOD-CENTRAL,194.62,8,58,4,23,3,3
+RB-10118,Camara de inspeccion de botella vacia,Inspeccion,Inspector de vacio,OEM,un,BOD-CENTRAL,12759.85,0,175,4,15,1,1
+RB-10119,Lampara estroboscopica LED de inspeccion,Inspeccion,Inspector de vacio,OEM,un,BOD-CENTRAL,2142.91,1,154,4,8,1,0
+RB-10120,Tarjeta de procesamiento de vision,Inspeccion,Inspector de nivel,OEM,un,BOD-CENTRAL,4991.61,0,144,4,10,1,0
+RB-10121,Rechazador neumatico de botella,Inspeccion,Estacion de rechazo,Importado,un,BOD-CENTRAL,1280.59,1,68,4,15,2,2
+RB-10122,Detector de metales en linea,Inspeccion,Control de calidad,Importado,un,BOD-CENTRAL,11728.71,0,118,3,17,2,1
+RB-10123,Quemador dual de caldera 2000 kg/h,Vapor,Caldera pirotubular,Importado,un,BOD-CENTRAL,24186.07,0,109,5,32,1,0
+RB-10124,Electrodo de encendido de quemador,Vapor,Caldera pirotubular,Importado,un,BOD-CENTRAL,133.69,6,63,5,27,2,0
+RB-10125,Valvula de seguridad de caldera 10 bar,Vapor,Caldera pirotubular,Importado,un,BOD-CENTRAL,1733.18,1,89,5,39,2,1
+RB-10126,"Bomba de alimentacion de caldera 5,5 kW",Vapor,Caldera pirotubular,Importado,un,BOD-CENTRAL,3799.29,1,101,5,16,1,1
+RB-10127,Sonda de nivel capacitiva de caldera,Vapor,Caldera pirotubular,Importado,un,BOD-CENTRAL,1173.21,2,73,5,14,2,0
+RB-10128,"Trampa de vapor termodinamica 3/4""",Vapor,Red de distribucion,Importado,un,BOD-CENTRAL,172.36,16,57,3,10,3,12
+RB-10129,Empaquetadura grafitada trenzada,Vapor,Valvulas de vapor,Nacional,kg,BOD-CENTRAL,79.3,84,20,3,14,4,78
+RB-10130,"Valvula reductora de presion de vapor 2""",Vapor,Red de distribucion,Importado,un,BOD-CENTRAL,2552.93,0,86,4,11,1,2
+RB-10131,Compresor de tornillo 75 kW (kit mayor),Aire comprimido,Compresor de servicio,Importado,un,BOD-CENTRAL,14177.37,0,93,5,42,2,0
+RB-10132,Elemento separador aire-aceite,Aire comprimido,Compresor de servicio,Importado,un,BOD-CENTRAL,352.62,3,74,5,17,3,0
+RB-10133,Filtro de aire de admision compresor,Aire comprimido,Compresor de servicio,Importado,un,BOD-CENTRAL,98.22,22,51,4,34,3,13
+RB-10134,"Filtro coalescente de linea 1""",Aire comprimido,Tratamiento de aire,Importado,un,BOD-CENTRAL,155.78,21,45,4,26,2,0
+RB-10135,Purga automatica de condensado,Aire comprimido,Tratamiento de aire,Importado,un,BOD-CENTRAL,454.68,11,55,3,21,3,0
+RB-10136,Secador frigorifico de aire (kit),Aire comprimido,Tratamiento de aire,Importado,un,BOD-CENTRAL,3466.62,0,112,4,20,1,2
+RB-10137,Compresor de amoniaco a tornillo (rotor),Frio,Central de amoniaco,Importado,un,BOD-CENTRAL,24247.21,0,152,5,36,1,1
+RB-10138,Valvula de expansion electronica NH3,Frio,Central de amoniaco,Importado,un,BOD-CENTRAL,3547.37,0,121,5,18,1,1
+RB-10139,Sensor de fuga de amoniaco electroquimico,Frio,Sala de maquinas,Importado,un,BOD-CENTRAL,1149.58,1,89,5,20,2,0
+RB-10140,"Bomba de glicol 7,5 kW",Frio,Circuito de glicol,Importado,un,BOD-CENTRAL,2712.72,0,79,4,15,2,1
+RB-10141,Relleno de torre de enfriamiento PVC,Frio,Torre de enfriamiento,Nacional,m2,BOD-CENTRAL,109.16,13,34,3,15,3,0
+RB-10142,"Ventilador axial de torre 5,5 kW",Frio,Torre de enfriamiento,Importado,un,BOD-CENTRAL,2126.42,1,76,3,11,2,1
+RB-10143,Boquilla de distribucion de torre,Frio,Torre de enfriamiento,Nacional,un,BOD-CENTRAL,13.09,110,17,3,19,3,3
+RB-10144,Valvula mixproof de doble asiento DN80,CIP,Matriz de valvulas CIP,Importado,un,BOD-CENTRAL,8926.32,0,154,5,35,1,0
+RB-10145,Kit de sellos para valvula mixproof DN80,CIP,Matriz de valvulas CIP,Importado,un,BOD-CENTRAL,445.05,6,122,5,40,1,2
+RB-10146,Bomba centrifuga CIP 15 kW,CIP,Central CIP,Importado,un,BOD-CENTRAL,4948.53,0,124,5,23,2,0
+RB-10147,Cabezal de lavado rotativo 360 grados,CIP,Limpieza de tanques,Importado,un,BOD-CENTRAL,1122.67,2,70,4,10,2,3
+RB-10148,Sensor de conductividad CIP sanitario,CIP,Control CIP,Importado,un,BOD-CENTRAL,901.88,4,79,4,13,2,1
+RB-10149,Resistencia de calentamiento de solucion CIP,CIP,Central CIP,Importado,un,BOD-CENTRAL,601.39,5,62,4,30,2,1
+RB-10150,Soplador de canal lateral 15 kW,RILES,Aireacion biologica,Importado,un,BOD-CENTRAL,6316.09,0,107,4,24,2,1
+RB-10151,Difusor de burbuja fina de membrana,RILES,Aireacion biologica,Importado,un,BOD-CENTRAL,49.71,235,82,4,6,2,0
+RB-10152,Sensor de oxigeno disuelto optico,RILES,Control de aireacion,Importado,un,BOD-CENTRAL,1826.36,1,80,4,17,2,0
+RB-10153,"Bomba sumergible de lodos 7,5 kW",RILES,Recirculacion de lodos,Importado,un,BOD-CENTRAL,4923.44,0,79,4,17,1,1
+RB-10154,Bomba dosificadora de polimero,RILES,Deshidratacion,Importado,un,BOD-CENTRAL,1889.5,1,71,3,23,3,0
+RB-10155,Tela filtrante para filtro banda,RILES,Deshidratacion,Importado,un,BOD-CENTRAL,1901.32,2,91,3,16,1,1
+RB-10156,Agitador sumergible de ecualizacion,RILES,Estanque de ecualizacion,Importado,un,BOD-CENTRAL,4094.7,0,93,3,14,2,2
+RB-10157,Sonda de pH industrial para RIL,RILES,Control de neutralizacion,Importado,un,BOD-CENTRAL,425.53,8,62,3,9,2,2
+RB-10158,Variador de frecuencia 22 kW,Automatizacion,Accionamientos de linea,Importado,un,BOD-CENTRAL,2740.79,2,62,4,23,2,1
+RB-10159,"Variador de frecuencia 5,5 kW",Automatizacion,Accionamientos de linea,Importado,un,BOD-CENTRAL,1187.76,5,52,4,30,3,1
+RB-10160,CPU de PLC con puerto Profinet,Automatizacion,Control de linea,Importado,un,BOD-CENTRAL,5626.4,0,111,5,27,1,0
+RB-10161,Tarjeta de entradas analogicas 8 canales,Automatizacion,Control de linea,Importado,un,BOD-CENTRAL,1584.06,1,98,5,38,1,0
+RB-10162,Tarjeta de salidas digitales 16 canales,Automatizacion,Control de linea,Importado,un,BOD-CENTRAL,483.14,2,80,5,26,1,1
+RB-10163,"Panel HMI 15"" tactil",Automatizacion,Interfaz de operador,Importado,un,BOD-CENTRAL,3905.61,0,90,4,17,2,1
+RB-10164,Fuente de poder 24 VDC 20 A,Automatizacion,Tableros de control,Importado,un,BOD-CENTRAL,433.89,4,34,4,19,2,2
+RB-10165,Switch industrial gestionado 8 puertos,Automatizacion,Red de planta,Importado,un,BOD-CENTRAL,1024.97,3,69,4,6,2,1
+RB-10166,Contactor tripolar 65 A con bobina 220 V,Automatizacion,Tableros de fuerza,Importado,un,BOD-CENTRAL,127.78,20,43,3,10,4,0
+RB-10167,Rele termico regulable 30-40 A,Automatizacion,Tableros de fuerza,Importado,un,BOD-CENTRAL,63.99,28,34,3,9,4,9
+RB-10168,Encoder incremental 1024 ppr,Automatizacion,Sincronizacion de linea,Importado,un,BOD-CENTRAL,436.1,5,48,4,13,2,1
+RB-10169,Barrera de seguridad optoelectronica,Automatizacion,Seguridad de maquina,Importado,un,BOD-CENTRAL,1262.41,1,98,4,17,2,1
+RB-10170,Interruptor de seguridad de puerta con enclavamiento,Automatizacion,Seguridad de maquina,Importado,un,BOD-CENTRAL,311.99,7,59,4,25,2,2
+RB-10171,Electrovalvula 5/2 monoestable 24 VDC,Neumatica,Islas de valvulas,Importado,un,BOD-CENTRAL,100.14,53,35,4,9,3,42
+RB-10172,Isla de valvulas de 16 posiciones,Neumatica,Islas de valvulas,Importado,un,BOD-CENTRAL,2908.2,0,73,4,20,2,0
+RB-10173,"Unidad de mantenimiento FRL 1/2""",Neumatica,Preparacion de aire,Importado,un,BOD-CENTRAL,222.51,14,37,3,14,4,16
+RB-10174,Racor rapido recto 8 mm,Neumatica,Instalacion neumatica,Nacional,un,BOD-CENTRAL,2.69,390,8,2,4,5,127
+RB-10175,Manguera de poliuretano 8x5 mm,Neumatica,Instalacion neumatica,Nacional,m,BOD-CENTRAL,1.69,1430,10,2,11,4,0
+RB-10176,Cilindro compacto ISO 21287 50x50,Neumatica,Actuadores de linea,Importado,un,BOD-CENTRAL,175.74,43,51,3,15,3,18
+RB-10177,Regulador de caudal con antirretorno,Neumatica,Actuadores de linea,Importado,un,BOD-CENTRAL,29.13,91,31,2,10,3,4
+RB-10178,Electrodo de pH de laboratorio,Laboratorio,Control de calidad,Importado,un,BOD-CENTRAL,355.95,4,42,2,5,2,1
+RB-10179,Celda de medicion de turbidez,Laboratorio,Control de calidad,Importado,un,BOD-CENTRAL,525.42,2,62,2,15,2,1
+RB-10180,Kit de reactivos para analisis de CO2,Laboratorio,Control de calidad,Importado,kit,BOD-CENTRAL,338.04,21,38,2,14,1,0
+RB-10181,"Membrana para filtracion microbiologica 0,45 um",Laboratorio,Microbiologia,Importado,un,BOD-CENTRAL,1.47,1134,49,2,6,3,888
+RB-10182,Membrana de osmosis inversa 8040 baja presion — variante 2,Tratamiento de agua,Planta RO,Importado,un,BOD-CENTRAL,648.91,10,63,4,15,2,2
+RB-10183,Portamembrana FRP 8040 300 psi — variante 2,Tratamiento de agua,Planta RO,Importado,un,BOD-CENTRAL,1382.4,0,109,4,23,1,1
+RB-10184,"Cartucho filtrante bobinado 5 um 40"" — variante 2",Tratamiento de agua,Prefiltracion RO,Nacional,un,BOD-CENTRAL,12.31,341,11,3,6,5,66
+RB-10185,"Cartucho filtrante plisado 1 um 30"" — variante 2",Tratamiento de agua,Pulido final,Nacional,un,BOD-CENTRAL,25.5,57,18,3,25,3,7
+RB-10186,Resina cationica fuerte para ablandador — variante 2,Tratamiento de agua,Ablandador,Importado,saco 25 L,BOD-CENTRAL,310.2,3,54,3,25,3,1
+RB-10187,Resina anionica base fuerte — variante 2,Tratamiento de agua,Desmineralizador,Importado,saco 25 L,BOD-CENTRAL,648.88,1,46,3,10,2,1
+RB-10188,Valvula multipuerto automatica ablandador — variante 2,Tratamiento de agua,Ablandador,Importado,un,BOD-CENTRAL,1974.14,0,79,3,10,1,2
+RB-10189,Lampara germicida UV 320 W — variante 2,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,524.47,8,39,4,13,2,2
+RB-10190,Funda de cuarzo para lampara UV — variante 2,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,274.71,5,47,4,12,2,4
+RB-10191,Balastro electronico UV — variante 2,Tratamiento de agua,Esterilizador UV,Importado,un,BOD-CENTRAL,723.94,2,61,4,23,1,1
+RB-10192,Bomba centrifuga multietapa 15 kW alta presion — variante 2,Tratamiento de agua,Bombeo RO,Importado,un,BOD-CENTRAL,6688.9,1,101,4,14,2,1
+RB-10193,Sensor de conductividad inductivo — variante 2,Tratamiento de agua,Control RO,Importado,un,BOD-CENTRAL,812.1,3,45,3,18,2,3
+RB-10194,Electrodo de pH con cable integrado — variante 2,Tratamiento de agua,Control de proceso,Importado,un,BOD-CENTRAL,231.76,9,27,3,14,3,5
+RB-10195,Bomba dosificadora de diafragma 10 L/h — variante 2,Tratamiento de agua,Dosificacion,Importado,un,BOD-CENTRAL,1453.2,1,48,3,10,3,0
+RB-10196,Diafragma PTFE para bomba dosificadora — variante 2,Tratamiento de agua,Dosificacion,Importado,un,BOD-CENTRAL,198.33,9,49,3,18,3,3
+RB-10197,Manguera de succion PVC reforzada dosificacion — variante 2,Tratamiento de agua,Dosificacion,Nacional,m,BOD-CENTRAL,6.75,160,10,2,15,4,37
+RB-10198,Medio filtrante antracita — variante 2,Tratamiento de agua,Filtro multimedia,Nacional,saco 25 kg,BOD-CENTRAL,132.01,5,21,3,15,3,1
+RB-10199,"Arena silicea filtrante 0,6 mm — variante 2",Tratamiento de agua,Filtro multimedia,Nacional,saco 25 kg,BOD-CENTRAL,44.8,6,22,3,5,4,0

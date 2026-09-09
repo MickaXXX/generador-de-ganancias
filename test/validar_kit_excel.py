@@ -32,13 +32,18 @@ def comprobar(condicion, mensaje):
         fallas.append(mensaje)
 
 
-def motor_js():
+def motor_js(fuente="demo", filas=FILAS):
     """Corre el mismo maestro por el motor del sitio."""
+    generador = ("const filas = (await import('./scripts/generar-demo.mjs'))"
+                 f".generarRepuestos({filas}, 7);" if fuente == "demo" else
+                 "const filas = (await import('./scripts/generar-embotelladora.mjs'))"
+                 f".generarEmbotelladora({filas});")
     guion = f"""
     import('./docs/core/criticidad.js').then(async (M) => {{
-      const {{ generarRepuestos }} = await import('./scripts/generar-demo.mjs');
-      const r = M.analizar(generarRepuestos({FILAS}, 7));
+      {generador}
+      const r = M.analizar(filas);
       console.log(JSON.stringify({{
+        filas,
         pesos: r.pesos.map((p) => p.peso),
         items: Object.fromEntries(r.items.map((i) => [i.sku, {{
           C: i.indiceCriticidad, clase: i.clase, ss: i.stockSeguridad,
@@ -141,8 +146,65 @@ def main():
         vacias = [crit[f"AG{f}"].value for f in range(2 + FILAS, 2 + FILAS + 5)]
         comprobar(all(v in (None, "") for v in vacias), f"las filas sin datos quedan limpias: {vacias}")
 
+    validar_embotelladora()
+
     print(f"\n{'TODO OK' if not fallas else f'{len(fallas)} FALLAS'}\n")
     return 0 if not fallas else 1
+
+
+def validar_embotelladora(n=200):
+    """
+    El caso duro: un maestro con varios ordenes de magnitud de diferencia en
+    precio y consumo, que es donde el metodo se rompia. Se pegan esas filas en
+    la hoja Datos del kit y se comprueba que Excel siga coincidiendo con el motor.
+    """
+    from openpyxl import load_workbook as cargar
+
+    print(f"\n== Maestro de embotelladora ({n} SKU, rango dinamico amplio) ==")
+    esperado = motor_js("embotelladora", n)
+    claves = ["sku", "descripcion", "categoria", "precio", "consumoAnual", "leadTime",
+              "criticidadEquipo", "horasParada", "proveedores", "stockActual"]
+
+    libro = cargar(KIT)
+    datos = libro["Datos"]
+    for fila in range(2, 2 + 300):          # se limpian las filas de ejemplo
+        for col in range(1, 11):
+            datos.cell(row=fila, column=col).value = None
+    for i, registro in enumerate(esperado["filas"], start=2):
+        for c, clave in enumerate(claves, start=1):
+            datos.cell(row=i, column=c).value = registro.get(clave)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        origen = Path(tmp) / "kit-embotelladora.xlsx"
+        libro.save(origen)
+        salida = Path(tmp) / "recalc"
+        salida.mkdir()
+        recalculado = recalcular(origen, salida)
+        crit = cargar(recalculado, data_only=True)["Criticidad"]
+
+        diferencias = {"C": 0, "clase": 0, "ss": 0, "S": 0}
+        comparados = 0
+        for fila in range(2, 2 + n):
+            sku = crit[f"A{fila}"].value
+            ref = esperado["items"].get(sku)
+            if ref is None:
+                continue
+            comparados += 1
+            if abs((crit[f"AG{fila}"].value or 0) - ref["C"]) > 1e-9:
+                diferencias["C"] += 1
+            if crit[f"AJ{fila}"].value != ref["clase"]:
+                diferencias["clase"] += 1
+            if (crit[f"AO{fila}"].value or 0) != ref["ss"]:
+                diferencias["ss"] += 1
+            if (crit[f"AP{fila}"].value or 0) != ref["S"]:
+                diferencias["S"] += 1
+
+        comprobar(comparados == n, f"se compararon los {n} repuestos ({comparados})")
+        for campo, cuenta in diferencias.items():
+            comprobar(cuenta == 0, f"{campo}: {cuenta} diferencias de {comparados}")
+        clases = [crit[f"AJ{f}"].value for f in range(2, 2 + n)]
+        comprobar(clases.count("A") <= n * 0.21,
+                  f"la clase A se mantiene acotada en Excel: {clases.count('A')} de {n}")
 
 
 if __name__ == "__main__":

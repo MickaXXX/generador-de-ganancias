@@ -275,6 +275,12 @@ function dibujarResultados() {
           <div style="width:${pct(resumen.porClase.B)}%;background:var(--clase-b)">${resumen.porClase.B ? "B" : ""}</div>
           <div style="width:${pct(resumen.porClase.C)}%;background:var(--clase-c)">${resumen.porClase.C ? "C" : ""}</div>
         </div>
+        <p class="silencio" style="font-size:.85rem;margin:0 0 10px">
+          El 20% más importante concentra el <strong>${(resumen.concentracion * 100).toFixed(0)}%</strong>
+          del impacto.${resumen.concentracion < 0.6
+            ? " Tu portafolio está poco concentrado: el corte por valor se acota a 20% / 30% / 50% para que la política siga siendo aplicable."
+            : " Portafolio concentrado: manda la regla de Pareto por valor."}
+        </p>
         <table style="min-width:0"><tbody>
           <tr><td><span class="insignia A">A</span></td><td>${numero(resumen.porClase.A)} SKU</td>
               <td class="num">servicio 99% · revisión 7 d</td></tr>
@@ -529,15 +535,26 @@ function conectarEventos() {
   });
 }
 
+const EJEMPLOS = {
+  embotelladora: { archivo: "ejemplo-embotelladora.csv", nombre: "Planta embotelladora — 200 SKU" },
+  planta: { archivo: "ejemplo-repuestos.csv", nombre: "Planta industrial — 120 SKU" },
+};
+
+/** En el sitio el ejemplo se descarga; en el paquete de un solo archivo va incrustado. */
+async function textoDeEjemplo(archivo) {
+  const respuesta = await fetch(archivo);
+  if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+  return respuesta.text();
+}
+
 async function cargarEjemplo() {
   aviso("#aviso-carga", "");
+  const ejemplo = EJEMPLOS[$("#set-ejemplo")?.value] ?? EJEMPLOS.embotelladora;
   try {
-    const respuesta = await fetch("ejemplo-repuestos.csv");
-    if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
-    const texto = await respuesta.text();
+    const texto = await textoDeEjemplo(ejemplo.archivo);
     const libro = XLSX.read(texto, { type: "string" });
     const filas = XLSX.utils.sheet_to_json(libro.Sheets[libro.SheetNames[0]], { defval: null });
-    estado.nombreArchivo = "ejemplo-repuestos.csv";
+    estado.nombreArchivo = ejemplo.nombre;
     prepararMapeo(filas);
   } catch (error) {
     aviso("#aviso-carga", `No se pudo cargar el ejemplo: ${error.message}`);

@@ -24,6 +24,7 @@ el costo de infraestructura: el sitio es estático y se aloja gratis.
 | `docs/config.js` | **El único archivo que necesitas editar** para vender. |
 | `producto/Kit-Criticidad-Repuestos.xlsx` | El producto digital vendible: el mismo método en fórmulas vivas de Excel. |
 | `scripts/licencia.mjs` | Emite licencias firmadas desde la línea de comandos. |
+| `datos/` | Maestros de ejemplo: 200 SKU de una planta embotelladora (CSV y Excel). |
 | `test/` | Pruebas del motor, de licencias, de la interfaz en navegador real y del Excel. |
 | `LANZAMIENTO.md` | El plan comercial: qué hacer, en qué orden, con los textos ya escritos. |
 
@@ -44,9 +45,29 @@ nadie a dedo**:
    rotación y lead time (en escala logarítmica, porque los repuestos tienen colas
    muy largas). El número de familias se elige maximizando el coeficiente de
    silueta, no a ojo.
-4. **ABC de Pareto** sobre criticidad × valor de consumo anual, y **política
-   (R,S)** por clase: nivel de servicio, periodo de revisión, stock de seguridad,
-   nivel objetivo S, exceso y capital liberable.
+4. **ABC híbrido** sobre criticidad × exposición económica, y **política (R,S)**
+   por clase: nivel de servicio, periodo de revisión, stock de seguridad, nivel
+   objetivo S, exceso y capital liberable.
+
+Dos decisiones del método que no son obvias, y que salieron de probar el motor
+con un maestro real de embotelladora (200 SKU, rango de 286× en consumo y 54× en
+precio):
+
+- **Precio y consumo se comparan en escala logarítmica.** Sin eso, el sesgo de
+  esos criterios se cuenta dos veces —la entropía premia la dispersión y la
+  normalización vectorial de TOPSIS la vuelve a premiar— y el ranking termina
+  encabezado por el consumible más barato de la planta en vez de por el repuesto
+  OEM de proveedor único.
+- **La exposición económica es `precio × (consumo + 1)`, no `precio × consumo`.**
+  Ese `+1` es el valor de una unidad en riesgo, y es lo que rescata al repuesto
+  de capital: un rotor de US$28.000 que no sale de bodega en años tiene valor de
+  consumo cero y con el criterio de solo-consumo caía a clase C, siendo
+  justamente el que más capital inmoviliza y el que puede parar la planta meses.
+- **El corte de Pareto se acota por proporción de clase** (20% / 30% / 50%). Un
+  portafolio de repuestos rara vez es Pareto puro: si el top 20% reúne solo la
+  mitad del impacto, el corte del 80% mandaría media bodega a clase A con nivel
+  de servicio 99% y revisión semanal. La herramienta muestra la concentración
+  real para que quien decide sepa en qué caso está.
 
 ---
 
@@ -65,14 +86,19 @@ de una planta.
 ## Pruebas
 
 ```bash
-npm test             # 41 pruebas del motor y del sistema de licencias
+npm test             # 49 pruebas del motor y del sistema de licencias
 npm run test:e2e     # flujo completo en Chromium real, con la red externa cortada
 npm run test:excel   # compara las fórmulas del Excel contra el motor JS (necesita LibreOffice)
 ```
 
 `npm run test:excel` es la prueba más importante del producto vendible: recalcula
 la planilla con LibreOffice y verifica que dé **exactamente** el mismo resultado
-que el motor del sitio, repuesto por repuesto.
+que el motor del sitio, repuesto por repuesto. Corre dos veces: con el maestro
+genérico y con el de embotelladora, que es el caso duro por su rango dinámico.
+
+Los maestros de ejemplo se regeneran con `npm run demo` (CSV) y
+`npm run base:embotelladora` (Excel presentable). Son deterministas: misma
+semilla, mismos datos.
 
 ## Emitir licencias
 

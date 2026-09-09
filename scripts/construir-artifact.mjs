@@ -45,22 +45,25 @@ function construir() {
     .trim();
 
   const sheetjs = leer("docs/vendor/xlsx.full.min.js");
-  const csvEjemplo = leer("docs/ejemplo-repuestos.csv");
+  const csvEjemplos = {
+    "ejemplo-embotelladora.csv": leer("docs/ejemplo-embotelladora.csv"),
+    "ejemplo-repuestos.csv": leer("docs/ejemplo-repuestos.csv"),
+  };
 
   const aplicacion = [
     aplanarModulo(leer("docs/core/criticidad.js")),
     aplanarModulo(leer("docs/core/licencia.js")),
     aplanarModulo(leer("docs/config.js")),
     aplanarModulo(leer("docs/app.js"))
-      // El CSV viaja incrustado: no hay servidor del que descargarlo.
+      // Los CSV viajan incrustados: no hay servidor del que descargarlos.
       .replace(
-        /const respuesta = await fetch\("ejemplo-repuestos\.csv"\);\s*\n\s*if \(!respuesta\.ok\)[^\n]*\n\s*const texto = await respuesta\.text\(\);/,
-        "const texto = CSV_EJEMPLO;"
+        /async function textoDeEjemplo\(archivo\) \{[\s\S]*?\n\}/,
+        "async function textoDeEjemplo(archivo) {\n  return CSV_EJEMPLOS[archivo];\n}"
       ),
   ].join("\n\n");
 
-  if (aplicacion.includes('fetch("ejemplo-repuestos.csv")')) {
-    throw new Error("No se pudo incrustar el CSV de ejemplo: revisa cargarEjemplo() en app.js");
+  if (aplicacion.includes("await fetch(archivo)")) {
+    throw new Error("No se pudieron incrustar los CSV de ejemplo: revisa textoDeEjemplo() en app.js");
   }
   for (const senal of ["export ", "import {"]) {
     if (aplicacion.includes(`\n${senal}`)) throw new Error(`Quedo un "${senal}" sin aplanar.`);
@@ -77,7 +80,7 @@ ${contenido}
 ${seguroEnScript(sheetjs)}
 </script>
 <script>
-const CSV_EJEMPLO = ${JSON.stringify(csvEjemplo)};
+const CSV_EJEMPLOS = ${JSON.stringify(csvEjemplos)};
 
 ${seguroEnScript(aplicacion)}
 </script>

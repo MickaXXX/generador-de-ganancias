@@ -23,13 +23,19 @@ jobs:
       - name: Regenerar datos de ejemplo y comprobar que no cambiaron
         run: |
           npm run demo
-          git diff --exit-code docs/ejemplo-repuestos.csv
+          cp datos/embotelladora-200.csv docs/ejemplo-embotelladora.csv
+          git diff --exit-code docs/ejemplo-repuestos.csv docs/ejemplo-embotelladora.csv datos/
 
       - name: Navegador para las pruebas de interfaz
         run: npx playwright install --with-deps chromium
 
       - name: Prueba de extremo a extremo
         run: npm run test:e2e
+
+      - name: Empaquetado de un solo archivo
+        run: |
+          npm run artifact
+          node test/verificar-bundle.mjs
 
       - name: Validar las formulas del kit Excel contra el motor
         run: |

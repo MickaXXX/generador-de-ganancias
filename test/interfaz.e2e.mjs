@@ -119,7 +119,16 @@ if (existsSync(plantilla)) {
 await pagina.click("#btn-ejemplo");
 await pagina.waitForSelector("#panel-mapeo:not(.oculto)");
 const resumenArchivo = await pagina.textContent("#resumen-archivo");
-comprobar(/120 filas/.test(resumenArchivo), `archivo leido: ${resumenArchivo.trim()}`);
+comprobar(/200 filas/.test(resumenArchivo), `ejemplo por defecto (embotelladora): ${resumenArchivo.trim()}`);
+
+// El segundo maestro de ejemplo debe cargarse igual de solo.
+await pagina.selectOption("#set-ejemplo", "planta");
+await pagina.click("#btn-ejemplo");
+await pagina.waitForFunction(() => /120 filas/.test(document.querySelector("#resumen-archivo").textContent), { timeout: 5000 });
+comprobar(true, "se puede cambiar de maestro de ejemplo");
+await pagina.selectOption("#set-ejemplo", "embotelladora");
+await pagina.click("#btn-ejemplo");
+await pagina.waitForFunction(() => /200 filas/.test(document.querySelector("#resumen-archivo").textContent), { timeout: 5000 });
 comprobar((await pagina.inputValue("#mapa-precio")) !== "", "mapeo automatico completo sin tocar nada");
 await pagina.screenshot({ path: join(CAPTURAS, "2-mapeo.png") });
 
@@ -132,7 +141,7 @@ comprobar(kpis.every((k) => !/NaN|undefined|Infinity/.test(k)), "ningun KPI mues
 const filasVisibles = await pagina.$$eval("#resultados tbody tr", (f) => f.length);
 comprobar(await pagina.isVisible(".bloqueo"), "aparece el bloqueo de la version gratuita");
 const textoBloqueo = await pagina.textContent(".bloqueo");
-comprobar(textoBloqueo.includes("120"), "el bloqueo nombra el total real de repuestos del archivo");
+comprobar(textoBloqueo.includes("200"), "el bloqueo nombra el total real de repuestos del archivo");
 comprobar(await pagina.isDisabled("#btn-exportar"), "exportar a Excel esta bloqueado en gratis");
 const analizados = Number((await pagina.textContent(".rejilla-kpi .kpi:nth-child(3) .cifra")).replace(/\D/g, ""));
 comprobar(analizados === CONFIG.limiteGratis, `la version gratis analiza exactamente ${CONFIG.limiteGratis} (analizo ${analizados})`);
@@ -158,10 +167,12 @@ await pagina.waitForFunction(
   { timeout: 5000 }
 );
 const analizadosPro = Number((await pagina.textContent(".rejilla-kpi .kpi:nth-child(3) .cifra")).replace(/\D/g, ""));
-comprobar(analizadosPro === 120, `Pro analiza el maestro completo (${analizadosPro} de 120)`);
+comprobar(analizadosPro === 200, `Pro analiza el maestro completo (${analizadosPro} de 200)`);
 comprobar(!(await pagina.isDisabled("#btn-exportar")), "exportar a Excel queda habilitado");
 const filasPro = await pagina.$$eval("#resultados tbody tr", (f) => f.length);
 comprobar(filasPro > filasVisibles, `la tabla crece de ${filasVisibles} a ${filasPro} filas`);
+const textoABC = await pagina.textContent("#resultados");
+comprobar(/concentra el \d+%/.test(textoABC), "se informa la concentracion real del portafolio");
 await pagina.screenshot({ path: join(CAPTURAS, "5-resultados-pro.png"), fullPage: true });
 
 const descarga = await Promise.all([

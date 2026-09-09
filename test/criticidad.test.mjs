@@ -262,3 +262,111 @@ test("un repuesto caro, de lead time largo y proveedor unico sube al top", () =>
   assert.equal(items[pos].clase, "A");
   assert.equal(items[pos].enRiesgo, true, "stock 0 en clase A es riesgo de quiebre");
 });
+
+// ---------------------------------------------------------------------------
+// Regresiones encontradas con un maestro real de embotelladora: los criterios
+// de cola larga secuestraban el indice y los repuestos de capital caian a C.
+// ---------------------------------------------------------------------------
+
+import { generarEmbotelladora } from "../scripts/generar-embotelladora.mjs";
+import { concentracionPareto } from "../docs/core/criticidad.js";
+
+test("un consumible barato de altisima rotacion no encabeza el ranking", () => {
+  const filas = [
+    // El caso que rompia el metodo: 1.900 salidas al año a 2 dolares la unidad.
+    { sku: "CONSUMIBLE", precio: 2, consumoAnual: 1900, leadTime: 10,
+      criticidadEquipo: 2, horasParada: 2, proveedores: 5 },
+    { sku: "CAPITAL", precio: 28000, consumoAnual: 0, leadTime: 165,
+      criticidadEquipo: 5, horasParada: 40, proveedores: 1 },
+    { sku: "OEM", precio: 90, consumoAnual: 240, leadTime: 120,
+      criticidadEquipo: 5, horasParada: 30, proveedores: 1 },
+    { sku: "COMUN", precio: 12, consumoAnual: 380, leadTime: 18,
+      criticidadEquipo: 3, horasParada: 6, proveedores: 5 },
+  ];
+  const { items } = analizar(filas);
+  assert.notEqual(items[0].sku, "CONSUMIBLE",
+    "el consumible mas barato no puede ser el repuesto mas critico de la planta");
+  const consumible = items.find((i) => i.sku === "CONSUMIBLE");
+  const oem = items.find((i) => i.sku === "OEM");
+  assert.ok(oem.indiceCriticidad > consumible.indiceCriticidad,
+    `el repuesto OEM de un solo proveedor debe superar al consumible (${oem.indiceCriticidad} vs ${consumible.indiceCriticidad})`);
+});
+
+test("un repuesto de capital sin rotacion queda en clase A", () => {
+  const filas = generarEmbotelladora(200);
+  const { items } = analizar(filas);
+  const capital = items.filter((i) => i.precio > 15000 && i.consumoAnual <= 1);
+  assert.ok(capital.length > 0, "el maestro de prueba debe traer repuestos de capital");
+  const enA = capital.filter((i) => i.clase === "A").length;
+  assert.equal(enA, capital.length,
+    `los ${capital.length} repuestos de capital deben ser clase A, solo ${enA} lo son`);
+});
+
+test("la escala logaritmica impide que un criterio se lleve todo el peso", () => {
+  const { pesos } = analizar(generarEmbotelladora(200));
+  const mayor = Math.max(...pesos.map((p) => p.peso));
+  assert.ok(mayor < 0.45, `ningun criterio deberia superar el 45% del peso (el mayor fue ${(mayor * 100).toFixed(1)}%)`);
+  assert.ok(pesos.every((p) => p.peso > 0.01), "ningun criterio deberia quedar anulado");
+});
+
+test("el ABC mantiene proporciones accionables aunque el portafolio sea plano", () => {
+  for (const n of [50, 120, 200]) {
+    const { resumen } = analizar(generarEmbotelladora(n));
+    const porcentajeA = resumen.porClase.A / resumen.n;
+    assert.ok(porcentajeA <= 0.21, `con ${n} SKU la clase A llego a ${(porcentajeA * 100).toFixed(0)}%`);
+    assert.ok(resumen.porClase.A >= 1, "siempre debe haber al menos un repuesto en A");
+    assert.equal(resumen.porClase.A + resumen.porClase.B + resumen.porClase.C, n);
+  }
+});
+
+test("un portafolio muy concentrado igual respeta el corte por valor", () => {
+  // 1 repuesto se lleva casi todo el impacto: la regla de Pareto manda sobre el tope.
+  const filas = [
+    { sku: "DOMINANTE", precio: 500000, consumoAnual: 50, leadTime: 90, proveedores: 1 },
+    ...Array.from({ length: 19 }, (_, i) => ({
+      sku: `MENOR-${i}`, precio: 5, consumoAnual: 2, leadTime: 10, proveedores: 5,
+    })),
+  ];
+  const { items } = analizar(filas);
+  assert.equal(items.find((i) => i.sku === "DOMINANTE").clase, "A");
+  const enA = items.filter((i) => i.clase === "A").length;
+  assert.ok(enA <= 4, `con un unico repuesto dominante la clase A debe ser minima, fue ${enA}`);
+});
+
+test("concentracionPareto mide la forma real del portafolio", () => {
+  const plano = new Array(100).fill(10);
+  cerca(concentracionPareto(plano), 0.2, 0.01);           // reparto parejo
+  const concentrado = [1000, ...new Array(99).fill(0.01)];
+  assert.ok(concentracionPareto(concentrado) > 0.98);      // todo en uno
+  assert.equal(concentracionPareto([]), 0);
+  assert.equal(concentracionPareto([0, 0, 0]), 0);
+});
+
+test("el maestro de embotelladora es coherente y variado", () => {
+  const filas = generarEmbotelladora(200);
+  assert.equal(filas.length, 200);
+  assert.equal(new Set(filas.map((f) => f.sku)).size, 200, "no puede haber SKU repetidos");
+  assert.ok(new Set(filas.map((f) => f.categoria)).size >= 15, "debe cubrir toda la planta");
+  assert.ok(filas.some((f) => f.stockActual === 0), "debe haber quiebres reales");
+  assert.ok(filas.some((f) => f.precio > 10000) && filas.some((f) => f.precio < 5),
+    "debe mezclar repuestos de capital y consumibles");
+  assert.ok(filas.some((f) => f.leadTime > 120), "debe haber repuestos OEM de importacion larga");
+  filas.forEach((f) => {
+    assert.ok(f.precio > 0 && Number.isFinite(f.precio), `precio invalido en ${f.sku}`);
+    assert.ok(f.consumoAnual >= 0 && f.stockActual >= 0, `cantidades invalidas en ${f.sku}`);
+    assert.ok(f.criticidadEquipo >= 1 && f.criticidadEquipo <= 5, `criticidad fuera de rango en ${f.sku}`);
+    assert.ok(f.proveedores >= 1, `proveedores invalidos en ${f.sku}`);
+  });
+});
+
+test("el analisis del maestro de embotelladora no produce NaN", () => {
+  const { items, resumen } = analizar(generarEmbotelladora(200));
+  assert.equal(items.length, 200);
+  assert.ok(resumen.capitalLiberable > 0 && resumen.capitalActual > 0);
+  assert.ok(resumen.concentracion > 0 && resumen.concentracion <= 1);
+  for (const it of items) {
+    for (const [k, v] of Object.entries(it)) {
+      if (typeof v === "number") assert.ok(Number.isFinite(v), `NaN en ${it.sku}.${k}`);
+    }
+  }
+});

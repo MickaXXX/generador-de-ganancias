@@ -319,37 +319,83 @@ export function politicaRS(item, clase, { cvDemanda = 0.5, diasAnio = 360 } = {}
 // ---------------------------------------------------------------------------
 
 /**
- * Impacto = indice de criticidad x valor de consumo anual. Se ordena de mayor a
- * menor y se corta por porcentaje acumulado: A hasta 80%, B hasta 95%, C el resto.
+ * Impacto = indice de criticidad x exposicion economica, ordenado de mayor a
+ * menor y cortado por porcentaje acumulado: A hasta 80%, B hasta 95%, C el resto.
+ *
+ * La exposicion es el valor de consumo anual MAS el valor de una unidad. Ese
+ * segundo termino es lo que rescata a los repuestos de capital: un rotor de
+ * 28.000 dolares que no sale de bodega en años tiene valor de consumo cero, y
+ * con el criterio de solo-consumo caia a clase C pese a ser justo el repuesto
+ * que inmoviliza mas capital y que puede dejar la planta detenida meses.
  */
-export function clasificarABC(items, indices, cortes = { A: 0.8, B: 0.95 }) {
+export function clasificarABC(items, indices, cortes = { A: 0.8, B: 0.95 }, topes = { A: 0.2, B: 0.5 }) {
   const impactos = items.map((it, i) => {
-    const valorAnual = (Number(it.consumoAnual) || 0) * (Number(it.precio) || 0);
-    // El piso evita que un repuesto de consumo cero pero criticidad alta quede invisible.
-    return { i, impacto: indices[i] * Math.max(valorAnual, 1) };
+    const precio = Number(it.precio) || 0;
+    const consumo = Number(it.consumoAnual) || 0;
+    const exposicion = precio * (consumo + 1);
+    // El piso evita que un repuesto sin precio cargado desaparezca del ranking.
+    return { i, impacto: indices[i] * Math.max(exposicion, 1) };
   });
   const total = suma(impactos.map((x) => x.impacto)) || 1;
   const orden = [...impactos].sort((a, b) => b.impacto - a.impacto);
 
+  // ABC hibrido: la regla de Pareto por valor acumulado, acotada por las
+  // proporciones clasicas de clase. Un portafolio poco concentrado —lo normal
+  // en repuestos, donde el top 20% suele reunir solo la mitad del impacto—
+  // haria que el corte del 80% mandara a media bodega a clase A, con nivel de
+  // servicio 99% y revision semanal para todo. Se toma la clase mas restrictiva
+  // de las dos reglas, que es lo que deja un ABC accionable.
+  const topeA = Math.max(1, Math.round(items.length * topes.A));
+  const topeAB = Math.max(topeA, Math.round(items.length * topes.B));
+
   const clases = new Array(items.length).fill("C");
+  // El acumulado se evalua ANTES de sumar el repuesto: un item entra en A si los
+  // que lo superan todavia no cubren el 80%. Con el acumulado inclusivo, un solo
+  // repuesto que por si mismo pasara el 95% terminaba clasificado C.
   let acumulado = 0;
-  for (const { i, impacto } of orden) {
+  orden.forEach(({ i, impacto }, posicion) => {
+    const fueraDeA = acumulado >= cortes.A || posicion >= topeA;
+    const fueraDeB = acumulado >= cortes.B || posicion >= topeAB;
+    clases[i] = fueraDeB ? "C" : fueraDeA ? "B" : "A";
     acumulado += impacto / total;
-    clases[i] = acumulado <= cortes.A ? "A" : acumulado <= cortes.B ? "B" : "C";
-  }
-  // Garantiza al menos un repuesto en A cuando hay datos.
-  if (items.length && !clases.includes("A")) clases[orden[0].i] = "A";
+  });
   return clases;
+}
+
+/**
+ * Que tan concentrado esta el portafolio: porcentaje del impacto total que
+ * reune el 20% de repuestos mas importantes. Sobre 70% el maestro sigue a
+ * Pareto y el ABC por valor manda; bajo 50% el portafolio es plano y quien
+ * decide deberia saberlo.
+ */
+export function concentracionPareto(impactos) {
+  if (!impactos.length) return 0;
+  const orden = [...impactos].sort((a, b) => b - a);
+  const total = suma(orden);
+  if (total <= 0) return 0;
+  const corte = Math.max(1, Math.ceil(orden.length * 0.2));
+  return suma(orden.slice(0, corte)) / total;
 }
 
 // ---------------------------------------------------------------------------
 // Orquestador
 // ---------------------------------------------------------------------------
 
-/** Criterios soportados. sentido 'costo' = valor alto REDUCE la criticidad. */
+/**
+ * Criterios soportados.
+ *   sentido 'costo' = un valor alto REDUCE la criticidad.
+ *   escala 'log'    = se compara en ordenes de magnitud, no en valor absoluto.
+ *
+ * Precio y consumo abarcan varios ordenes de magnitud en un maestro real (un
+ * empaque de 2 dolares junto a un rotor de 28.000; una membrana que sale 2.400
+ * veces al año junto a un repuesto de capital que no sale nunca). Sin la escala
+ * logaritmica ese sesgo se cuenta dos veces —la entropia premia la dispersion y
+ * despues la normalizacion vectorial de TOPSIS la vuelve a premiar—, y el
+ * ranking termina encabezado por el consumible mas barato de la planta.
+ */
 export const CRITERIOS = [
-  { clave: "precio",           etiqueta: "Precio unitario",        sentido: "beneficio" },
-  { clave: "consumoAnual",     etiqueta: "Consumo anual",          sentido: "beneficio" },
+  { clave: "precio",           etiqueta: "Precio unitario",        sentido: "beneficio", escala: "log" },
+  { clave: "consumoAnual",     etiqueta: "Consumo anual",          sentido: "beneficio", escala: "log" },
   { clave: "leadTime",         etiqueta: "Lead time (días)",       sentido: "beneficio" },
   { clave: "criticidadEquipo", etiqueta: "Criticidad del equipo",  sentido: "beneficio" },
   { clave: "horasParada",      etiqueta: "Horas de parada si falla", sentido: "beneficio" },
@@ -381,7 +427,8 @@ export function analizar(filas, config = {}) {
   const matriz = filas.map((f) =>
     usados.map((c) => {
       const v = Number(f[c.clave]);
-      return Number.isFinite(v) ? Math.max(v, 0) : 0;
+      const x = Number.isFinite(v) ? Math.max(v, 0) : 0;
+      return c.escala === "log" ? Math.log1p(x) : x;
     })
   );
 
@@ -403,6 +450,9 @@ export function analizar(filas, config = {}) {
   }
 
   const clases = clasificarABC(filas, indices);
+  const impactos = filas.map((f, i) =>
+    indices[i] * Math.max((Number(f.precio) || 0) * ((Number(f.consumoAnual) || 0) + 1), 1)
+  );
 
   const items = filas.map((f, i) => {
     const politica = politicaRS(f, clases[i], { cvDemanda });
@@ -450,6 +500,7 @@ export function analizar(filas, config = {}) {
     capitalActual: suma(conStock.map((it) => it.capitalActual)),
     capitalPropuesto: suma(conStock.map((it) => it.capitalPropuesto)),
     capitalLiberable: suma(items.map((it) => it.capitalLiberable)),
+    concentracion: concentracionPareto(impactos),
     enRiesgo: items.filter((it) => it.enRiesgo).length,
     riesgoClaseA: items.filter((it) => it.enRiesgo && it.clase === "A").length,
     tieneStock: conStock.length > 0,

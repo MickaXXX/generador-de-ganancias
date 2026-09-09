@@ -53,6 +53,11 @@ COL_CRUDO = "CDEFGH"      # copia de los criterios
 COL_MM = "JKLMNO"         # normalizacion min-max (+eps) para la entropia
 COL_PLN = "QRSTUV"        # terminos p*ln(p)
 COL_V = ["X", "Y", "Z", "AA", "AB", "AC"]   # matriz ponderada de TOPSIS
+COL_T = ["BG", "BH", "BI", "BJ", "BK", "BL"]  # criterios en su escala de comparacion
+# Precio y consumo se comparan en ordenes de magnitud: en un maestro real abarcan
+# varios ceros de diferencia y, sin logaritmo, ese sesgo se cuenta dos veces
+# (la entropia premia la dispersion y la normalizacion vectorial la vuelve a premiar).
+ESCALA_LOG = {0, 1}
 FILA_IDEAL_POS = ULTIMA + 2
 FILA_IDEAL_NEG = ULTIMA + 3
 EPS = "0.000000001"
@@ -180,7 +185,15 @@ def hoja_parametros(libro):
     h["B13"] = 0.80
     h["A14"] = "Hasta % acumulado -> clase B"
     h["B14"] = 0.95
-    for fila in (13, 14):
+    h["A15"] = "Tope de SKU en clase A"
+    h["B15"] = 0.20
+    h["A16"] = "Tope de SKU en clase A+B"
+    h["B16"] = 0.50
+    h["C15"] = "El ABC por valor se acota con estas proporciones: sin tope, un portafolio poco"
+    h["C15"].font = Font(size=9, italic=True, color="808080")
+    h["C16"] = "concentrado manda media bodega a clase A y la politica deja de ser accionable."
+    h["C16"].font = Font(size=9, italic=True, color="808080")
+    for fila in (13, 14, 15, 16):
         h.cell(row=fila, column=2).number_format = "0%"
         h.cell(row=fila, column=2).fill = PatternFill("solid", fgColor="FFF2CC")
 
@@ -227,8 +240,14 @@ def hoja_criticidad(libro):
         for destino, (_, origen, _s) in zip(COL_CRUDO, CRITERIOS):
             h[f"{destino}{f}"] = f'=IF({vacio},"",IFERROR(MAX(0,N(Datos!{origen}{f})),0))'
 
+        # Escala de comparacion de cada criterio (logaritmica donde corresponde).
+        for i, destino in enumerate(COL_T):
+            origen = COL_CRUDO[i]
+            expresion = f"LN(1+{origen}{f})" if i in ESCALA_LOG else f"{origen}{f}"
+            h[f"{destino}{f}"] = f'=IF({vacio},"",{expresion})'
+
         # Normalizacion min-max (+eps) para poder tomar logaritmo.
-        for destino, origen in zip(COL_MM, COL_CRUDO):
+        for destino, origen in zip(COL_MM, COL_T):
             rango = f"{origen}${PRIMERA}:{origen}${ULTIMA}"
             h[f"{destino}{f}"] = (
                 f'=IF({vacio},"",IF(MAX({rango})-MIN({rango})<0.000000001,0.5,'
@@ -244,7 +263,7 @@ def hoja_criticidad(libro):
 
         # Matriz ponderada: normalizacion vectorial x peso por entropia.
         for i, destino in enumerate(COL_V):
-            origen = COL_CRUDO[i]
+            origen = COL_T[i]
             rango = f"{origen}${PRIMERA}:{origen}${ULTIMA}"
             peso = f"$BE${2 + i}"
             h[f"{destino}{f}"] = (
@@ -254,13 +273,23 @@ def hoja_criticidad(libro):
         h[f"AE{f}"] = f'=IF({vacio},"",SQRT(SUMXMY2(X{f}:AC{f},$X${FILA_IDEAL_POS}:$AC${FILA_IDEAL_POS})))'
         h[f"AF{f}"] = f'=IF({vacio},"",SQRT(SUMXMY2(X{f}:AC{f},$X${FILA_IDEAL_NEG}:$AC${FILA_IDEAL_NEG})))'
         h[f"AG{f}"] = f'=IF({vacio},"",IF(AE{f}+AF{f}<0.000000001,0.5,AF{f}/(AE{f}+AF{f})))'
-        h[f"AH{f}"] = f'=IF({vacio},"",AG{f}*MAX(C{f}*D{f},1))'
+        # Exposicion economica = valor de consumo anual + valor de una unidad. El
+        # segundo termino rescata al repuesto de capital que no rota en años: su
+        # valor de consumo es cero y con el criterio de solo-consumo caia a clase C.
+        h[f"AH{f}"] = f'=IF({vacio},"",AG{f}*MAX(C{f}*(D{f}+1),1))'
         rango_impacto = f"$AH${PRIMERA}:$AH${ULTIMA}"
+        # Acumulado EXCLUSIVO: cuanto reunen los repuestos que superan a este.
         h[f"AI{f}"] = (
-            f'=IF({vacio},"",SUMIF({rango_impacto},">="&AH{f},{rango_impacto})/SUM({rango_impacto}))'
+            f'=IF({vacio},"",SUMIF({rango_impacto},">"&AH{f},{rango_impacto})/SUM({rango_impacto}))'
         )
+        # Posicion en el ranking de impacto (0 = el mas importante).
+        h[f"AV{f}"] = f'=IF({vacio},"",COUNTIF({rango_impacto},">"&AH{f}))'
+        # ABC hibrido: regla de Pareto por valor, acotada por proporcion de clase.
+        # Se toma la clase mas restrictiva de las dos.
         h[f"AJ{f}"] = (
-            f'=IF({vacio},"",IF(AI{f}<=Parametros!$B$13,"A",IF(AI{f}<=Parametros!$B$14,"B","C")))'
+            f'=IF({vacio},"",'
+            f'IF(OR(AI{f}>=Parametros!$B$14,AV{f}>=$BE$12),"C",'
+            f'IF(OR(AI{f}>=Parametros!$B$13,AV{f}>=$BE$11),"B","A")))'
         )
 
         h[f"AK{f}"] = f'=IF({vacio},"",VLOOKUP(AJ{f},Parametros!$A$8:$C$10,2,FALSE))'
@@ -304,6 +333,12 @@ def hoja_criticidad(libro):
     h["BD10"] = "Repuestos con datos"
     h["BD10"].font = Font(bold=True, size=10)
     h["BE10"] = f"=COUNT(Datos!D{PRIMERA}:D{ULTIMA})"
+    h["BD11"] = "Tope de clase A (SKU)"
+    h["BD11"].font = Font(bold=True, size=10)
+    h["BE11"] = "=MAX(1,ROUND($BE$10*Parametros!$B$15,0))"
+    h["BD12"] = "Tope de clase A+B (SKU)"
+    h["BD12"].font = Font(bold=True, size=10)
+    h["BE12"] = "=MAX($BE$11,ROUND($BE$10*Parametros!$B$16,0))"
 
     # --- Soluciones ideal y anti-ideal --------------------------------------
     h[f"W{FILA_IDEAL_POS}"] = "Ideal +"
@@ -320,7 +355,7 @@ def hoja_criticidad(libro):
                            "AU": 20, "BA": 20, "BB": 12, "BC": 12, "BD": 18, "BE": 10}.items():
         h.column_dimensions[columna].width = ancho
     # Las columnas intermedias son de calculo: se agrupan y ocultan.
-    for columna in list(COL_MM) + list(COL_PLN) + COL_V + ["AE", "AF", "AH", "AI", "AM", "AN"]:
+    for columna in list(COL_MM) + list(COL_PLN) + COL_V + COL_T + ["AE", "AF", "AH", "AI", "AM", "AN", "AV"]:
         h.column_dimensions[columna].outlineLevel = 1
         h.column_dimensions[columna].hidden = True
 

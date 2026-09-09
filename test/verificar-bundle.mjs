@@ -31,7 +31,7 @@ await p.goto("http://localhost:4174/", { waitUntil: "networkidle" });
 ok(await p.isVisible("#zona-carga"), "la pagina carga");
 await p.click("#btn-ejemplo");
 await p.waitForSelector("#panel-mapeo:not(.oculto)", { timeout: 10000 });
-ok(/120 filas/.test(await p.textContent("#resumen-archivo")), "el CSV incrustado se lee sin red");
+ok(/200 filas/.test(await p.textContent("#resumen-archivo")), "el CSV de embotelladora incrustado se lee sin red");
 await p.click("#btn-calcular");
 await p.waitForSelector("#resultados:not(.oculto)", { timeout: 10000 });
 const kpis = await p.$$eval(".kpi .cifra", (n) => n.map((x) => x.textContent.trim()));

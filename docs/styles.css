@@ -79,7 +79,8 @@ a { color: var(--acento-2); }
 }
 .portada p.bajada { font-size: 1.14rem; color: var(--texto-2); max-width: 62ch; }
 .destacado { color: var(--acento); }
-.acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; align-items: center; }
+.acciones select { width: auto; padding: 12px 13px; }
 .senales { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px; color: var(--texto-2); font-size: .88rem; }
 .senales span { display: flex; align-items: center; gap: 7px; }
 .punto { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: none; }

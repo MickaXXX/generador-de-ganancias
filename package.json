@@ -8,11 +8,14 @@
     "test": "node --test test/*.test.mjs",
     "test:e2e": "node test/interfaz.e2e.mjs",
     "test:excel": "python3 test/validar_kit_excel.py",
-    "demo": "node scripts/generar-demo.mjs 120",
+    "demo": "node scripts/generar-demo.mjs 120 && node scripts/generar-embotelladora.mjs 200",
     "producto": "python3 scripts/generar_kit_excel.py 60",
     "licencia:par": "node scripts/licencia.mjs generar-par",
     "licencia:emitir": "node scripts/licencia.mjs emitir",
-    "servir": "node -e \"const{createServer}=require('node:http'),{readFile}=require('node:fs/promises'),{join,extname}=require('node:path');const T={'.html':'text/html','.js':'text/javascript','.css':'text/css','.csv':'text/csv'};createServer(async(q,r)=>{try{const f=join('docs',q.url==='/'?'index.html':decodeURIComponent(q.url.split('?')[0]));const c=await readFile(f);r.writeHead(200,{'Content-Type':T[extname(f)]||'application/octet-stream'});r.end(c)}catch{r.writeHead(404).end()}}).listen(8080,()=>console.log('http://localhost:8080'))\""
+    "servir": "node -e \"const{createServer}=require('node:http'),{readFile}=require('node:fs/promises'),{join,extname}=require('node:path');const T={'.html':'text/html','.js':'text/javascript','.css':'text/css','.csv':'text/csv'};createServer(async(q,r)=>{try{const f=join('docs',q.url==='/'?'index.html':decodeURIComponent(q.url.split('?')[0]));const c=await readFile(f);r.writeHead(200,{'Content-Type':T[extname(f)]||'application/octet-stream'});r.end(c)}catch{r.writeHead(404).end()}}).listen(8080,()=>console.log('http://localhost:8080'))\"",
+    "base:embotelladora": "python3 scripts/generar_base_embotelladora.py 200",
+    "artifact": "node scripts/construir-artifact.mjs",
+    "plantilla": "python3 scripts/generar_plantilla_datos.py"
   },
   "license": "MIT",
   "devDependencies": {
