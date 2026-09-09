@@ -1,0 +1,162 @@
+/**
+ * Prueba de extremo a extremo sobre un navegador real: carga el sitio, corre el
+ * flujo completo (ejemplo -> mapeo -> calculo -> limite gratis -> licencia Pro
+ * -> exportacion a Excel) y guarda capturas.
+ *
+ *   node test/interfaz.e2e.mjs
+ */
+import { chromium } from "playwright";
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
+import { existsSync, mkdirSync } from "node:fs";
+import { resolve, dirname, extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { CONFIG } from "../docs/config.js";
+
+const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const DOCS = join(RAIZ, "docs");
+const CAPTURAS = join(RAIZ, "capturas");
+const TIPOS = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".csv": "text/csv", ".png": "image/png" };
+
+let fallas = 0;
+const comprobar = (condicion, mensaje) => {
+  console.log(`${condicion ? "  ok  " : " FALLA"} ${mensaje}`);
+  if (!condicion) fallas++;
+};
+
+const servidor = createServer(async (peticion, respuesta) => {
+  try {
+    const ruta = peticion.url.split("?")[0];
+    const archivo = join(DOCS, ruta === "/" ? "index.html" : decodeURIComponent(ruta));
+    if (!archivo.startsWith(DOCS)) { respuesta.writeHead(403).end(); return; }
+    const contenido = await readFile(archivo);
+    respuesta.writeHead(200, { "Content-Type": TIPOS[extname(archivo)] || "application/octet-stream" });
+    respuesta.end(contenido);
+  } catch {
+    respuesta.writeHead(404).end("no encontrado");
+  }
+});
+
+await new Promise((listo) => servidor.listen(4173, listo));
+mkdirSync(CAPTURAS, { recursive: true });
+
+// El contenedor trae Chromium preinstalado; se usa ese binario en vez de
+// descargar uno nuevo (PLAYWRIGHT_BROWSERS_PATH puede apuntar a otra revision).
+const BINARIO = "/opt/pw-browsers/chromium";
+const navegador = await chromium.launch(existsSync(BINARIO) ? { executablePath: BINARIO } : {});
+const contexto = await navegador.newContext({ viewport: { width: 1440, height: 1000 }, acceptDownloads: true });
+await contexto.route("**://**", (ruta) => {
+  // Se corta todo lo externo a proposito: el producto debe funcionar dentro de
+  // la red de una planta, sin CDN ni internet.
+  const url = ruta.request().url();
+  return url.startsWith("http://localhost:4173") ? ruta.continue() : ruta.abort();
+});
+const pagina = await contexto.newPage();
+
+const erroresConsola = [];
+pagina.on("pageerror", (e) => erroresConsola.push(String(e)));
+pagina.on("console", (m) => { if (m.type() === "error") erroresConsola.push(m.text()); });
+
+console.log("\n== Flujo gratuito ==");
+await pagina.goto("http://localhost:4173/", { waitUntil: "networkidle" });
+comprobar(await pagina.title() !== "", `titulo: ${await pagina.title()}`);
+await pagina.screenshot({ path: join(CAPTURAS, "1-portada.png"), fullPage: false });
+
+// --- deteccion automatica de columnas --------------------------------------
+const deteccion = await pagina.evaluate(() => {
+  const { detectarMapeo, aNumero } = window.__critispare;
+  return {
+    espanol: detectarMapeo(["SKU", "Descripcion", "Precio unitario", "Consumo anual", "Lead time (dias)", "Stock actual"]),
+    ingles: detectarMapeo(["Part Number", "Description", "Unit Cost", "Annual Demand", "Lead Time", "On Hand"]),
+    sucio: detectarMapeo(["  código ", "PRECIO UNITARIO $", "Consumo Anual (un)", "Lead-Time"]),
+    numeros: [aNumero("US$ 1.234,56"), aNumero("1,234.56"), aNumero("45"), aNumero(""), aNumero("s/i"), aNumero(null)],
+  };
+});
+comprobar(deteccion.espanol.sku === "SKU" && deteccion.espanol.precio === "Precio unitario", "detecta encabezados en espanol");
+comprobar(deteccion.ingles.precio === "Unit Cost" && deteccion.ingles.consumoAnual === "Annual Demand", "detecta encabezados en ingles");
+comprobar(deteccion.sucio.precio === "PRECIO UNITARIO $" && deteccion.sucio.leadTime === "Lead-Time", "tolera acentos, mayusculas y simbolos");
+comprobar(deteccion.numeros[0] === 1234.56, `formato chileno US$ 1.234,56 -> ${deteccion.numeros[0]}`);
+comprobar(deteccion.numeros[1] === 1234.56, `formato ingles 1,234.56 -> ${deteccion.numeros[1]}`);
+comprobar(deteccion.numeros[3] === null && deteccion.numeros[4] === null && deteccion.numeros[5] === null, "celdas vacias o con texto -> null");
+
+// --- carga del ejemplo y calculo -------------------------------------------
+await pagina.click("#btn-ejemplo");
+await pagina.waitForSelector("#panel-mapeo:not(.oculto)");
+const resumenArchivo = await pagina.textContent("#resumen-archivo");
+comprobar(/120 filas/.test(resumenArchivo), `archivo leido: ${resumenArchivo.trim()}`);
+comprobar((await pagina.inputValue("#mapa-precio")) !== "", "mapeo automatico completo sin tocar nada");
+await pagina.screenshot({ path: join(CAPTURAS, "2-mapeo.png") });
+
+await pagina.click("#btn-calcular");
+await pagina.waitForSelector("#resultados:not(.oculto)");
+const kpis = await pagina.$$eval(".kpi .cifra", (n) => n.map((x) => x.textContent.trim()));
+comprobar(kpis.length === 4, `4 tarjetas KPI (${kpis.join(" | ")})`);
+comprobar(kpis.every((k) => !/NaN|undefined|Infinity/.test(k)), "ningun KPI muestra NaN o undefined");
+
+const filasVisibles = await pagina.$$eval("#resultados tbody tr", (f) => f.length);
+comprobar(await pagina.isVisible(".bloqueo"), "aparece el bloqueo de la version gratuita");
+const textoBloqueo = await pagina.textContent(".bloqueo");
+comprobar(textoBloqueo.includes("120"), "el bloqueo nombra el total real de repuestos del archivo");
+comprobar(await pagina.isDisabled("#btn-exportar"), "exportar a Excel esta bloqueado en gratis");
+const analizados = Number((await pagina.textContent(".rejilla-kpi .kpi:nth-child(3) .cifra")).replace(/\D/g, ""));
+comprobar(analizados === CONFIG.limiteGratis, `la version gratis analiza exactamente ${CONFIG.limiteGratis} (analizo ${analizados})`);
+await pagina.screenshot({ path: join(CAPTURAS, "3-resultados-gratis.png"), fullPage: true });
+
+console.log("\n== Activacion de licencia ==");
+await pagina.click("#btn-licencia");
+await pagina.waitForSelector("#velo-licencia:not(.oculto)");
+await pagina.fill("#entrada-licencia", "clave-inventada-por-un-pirata");
+await pagina.click("#btn-activar");
+await pagina.waitForSelector("#aviso-licencia .aviso.error");
+comprobar(!(await pagina.isVisible("#insignia-pro")), "una clave falsa NO desbloquea Pro");
+await pagina.screenshot({ path: join(CAPTURAS, "4-licencia-rechazada.png") });
+
+await pagina.click("#btn-demo-licencia");
+await pagina.waitForSelector("#aviso-licencia .aviso.exito", { timeout: 5000 });
+comprobar(await pagina.isVisible("#insignia-pro"), "la licencia firmada valida desbloquea Pro");
+await pagina.waitForSelector("#velo-licencia", { state: "hidden", timeout: 5000 });
+
+console.log("\n== Flujo Pro ==");
+await pagina.waitForFunction(
+  () => !document.querySelector(".bloqueo") && !document.querySelector("#btn-exportar").disabled,
+  { timeout: 5000 }
+);
+const analizadosPro = Number((await pagina.textContent(".rejilla-kpi .kpi:nth-child(3) .cifra")).replace(/\D/g, ""));
+comprobar(analizadosPro === 120, `Pro analiza el maestro completo (${analizadosPro} de 120)`);
+comprobar(!(await pagina.isDisabled("#btn-exportar")), "exportar a Excel queda habilitado");
+const filasPro = await pagina.$$eval("#resultados tbody tr", (f) => f.length);
+comprobar(filasPro > filasVisibles, `la tabla crece de ${filasVisibles} a ${filasPro} filas`);
+await pagina.screenshot({ path: join(CAPTURAS, "5-resultados-pro.png"), fullPage: true });
+
+const descarga = await Promise.all([
+  pagina.waitForEvent("download", { timeout: 15000 }),
+  pagina.click("#btn-exportar"),
+]).then(([d]) => d);
+const destino = join(CAPTURAS, "informe-critispare.xlsx");
+await descarga.saveAs(destino);
+comprobar(existsSync(destino) && /\.xlsx$/.test(descarga.suggestedFilename()), `Excel descargado: ${descarga.suggestedFilename()}`);
+
+console.log("\n== Persistencia y robustez ==");
+await pagina.reload({ waitUntil: "networkidle" });
+await pagina.waitForFunction(() => !document.querySelector("#insignia-pro").classList.contains("oculto"), { timeout: 5000 });
+comprobar(true, "la licencia sobrevive a recargar la pagina");
+
+await pagina.evaluate(() => localStorage.setItem("critispare.licencia", "basura.basura"));
+await pagina.reload({ waitUntil: "networkidle" });
+await pagina.waitForTimeout(600);
+comprobar(!(await pagina.isVisible("#insignia-pro")), "una licencia adulterada en localStorage se descarta");
+
+// --- vista movil ------------------------------------------------------------
+const movil = await contexto.newPage();
+await movil.setViewportSize({ width: 390, height: 844 });
+await movil.goto("http://localhost:4173/", { waitUntil: "networkidle" });
+const desborde = await movil.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+comprobar(desborde <= 1, `no hay desborde horizontal en movil (${desborde}px)`);
+await movil.screenshot({ path: join(CAPTURAS, "6-movil.png") });
+
+comprobar(erroresConsola.length === 0, `sin errores de consola${erroresConsola.length ? `: ${erroresConsola.slice(0, 3).join(" | ")}` : ""}`);
+
+await navegador.close();
+servidor.close();
+console.log(`\n${fallas === 0 ? "TODO OK" : `${fallas} FALLAS`}\n`);
+process.exit(fallas === 0 ? 0 : 1);

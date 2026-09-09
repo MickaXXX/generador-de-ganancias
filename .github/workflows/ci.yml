@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Instalar dependencias
+        run: npm ci || npm install
+
+      - name: Pruebas del motor y de licencias
+        run: npm test
+
+      - name: Regenerar datos de ejemplo y comprobar que no cambiaron
+        run: |
+          npm run demo
+          git diff --exit-code docs/ejemplo-repuestos.csv
+
+      - name: Navegador para las pruebas de interfaz
+        run: npx playwright install --with-deps chromium
+
+      - name: Prueba de extremo a extremo
+        run: npm run test:e2e
+
+      - name: Validar las formulas del kit Excel contra el motor
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libreoffice-calc python3-openpyxl
+          python3 test/validar_kit_excel.py
+
+      - name: Guardar capturas y producto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencia
+          path: |
+            capturas/
+            producto/
+          if-no-files-found: ignore
