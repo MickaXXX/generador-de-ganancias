@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CritiSpare — Criticidad de repuestos y capital inmovilizado</title>
+<meta name="description" content="Sube tu maestro de repuestos y descubre en 60 segundos cuánto capital tienes dormido en bodega y qué repuestos críticos están bajo cobertura. Los datos nunca salen de tu computador.">
+<meta property="og:title" content="CritiSpare — Cuánto capital duerme en tu bodega de repuestos">
+<meta property="og:description" content="Criticidad multicriterio (Entropía + TOPSIS), familias por k-means y política (R,S) automática. Sin instalar nada.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<!-- SheetJS incrustado: el sitio funciona sin internet y detrás del firewall de la planta. -->
+<script src="vendor/xlsx.full.min.js" defer></script>
+</head>
+<body>
+
+<header class="barra">
+  <div class="envoltura">
+    <div class="logo"><span class="logo-marca">CS</span> <span id="marca">CritiSpare</span></div>
+    <nav>
+      <a href="#herramienta">Herramienta</a>
+      <a href="#metodo">Método</a>
+      <a href="#precio">Precio</a>
+      <span id="insignia-pro" class="pastilla-pro oculto">PRO</span>
+      <button class="boton boton-secundario boton-fino" id="btn-licencia">Tengo licencia</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="portada">
+  <div class="envoltura">
+    <span class="etiqueta">⚙️ Para jefes de mantenimiento, bodega y confiabilidad</span>
+    <h1>Tu bodega tiene <span class="destacado">capital dormido</span>.<br>Averigua cuánto en 60 segundos.</h1>
+    <p class="bajada">
+      Sube tu maestro de repuestos y CritiSpare calcula la criticidad real de cada SKU con un
+      método multicriterio objetivo, agrupa tu portafolio en familias y entrega la política de
+      inventario <strong>(R,S)</strong> que le corresponde a cada clase: cuánto capital puedes
+      liberar y qué repuestos críticos están a punto de dejarte la planta parada.
+    </p>
+    <div class="acciones">
+      <a href="#herramienta" class="boton boton-primario">Analizar mi maestro (gratis)</a>
+      <button class="boton boton-secundario" id="btn-ejemplo">Ver con datos de ejemplo</button>
+    </div>
+    <div class="senales">
+      <span><i class="punto"></i> Tus datos nunca salen de tu computador</span>
+      <span><i class="punto"></i> Sin registro ni instalación</span>
+      <span><i class="punto"></i> Excel o CSV</span>
+    </div>
+  </div>
+</section>
+
+<section id="herramienta">
+  <div class="envoltura">
+    <h2>1. Carga tu maestro de repuestos</h2>
+    <p class="subtitulo">
+      Acepta .xlsx, .xls y .csv. Basta con SKU, precio, consumo anual y lead time; mientras más
+      columnas entregues, más fino queda el análisis. Todo el cálculo ocurre en tu navegador.
+    </p>
+
+    <div class="zona-carga" id="zona-carga" tabindex="0" role="button" aria-label="Cargar archivo">
+      <div class="icono">📄</div>
+      <div><strong>Arrastra tu archivo aquí</strong> o haz clic para elegirlo</div>
+      <div class="pista">.xlsx · .xls · .csv — se procesa localmente, no se sube a ningún servidor</div>
+      <input type="file" id="entrada-archivo" accept=".xlsx,.xls,.csv" hidden>
+    </div>
+    <div id="aviso-carga"></div>
+
+    <div id="panel-mapeo" class="tarjeta oculto" style="margin-top:22px">
+      <div class="entre" style="margin-bottom:16px">
+        <div>
+          <h3 style="margin:0">2. Confirma las columnas</h3>
+          <div class="silencio" id="resumen-archivo"></div>
+        </div>
+        <button class="boton boton-primario" id="btn-calcular">Calcular criticidad</button>
+      </div>
+      <div class="rejilla-mapeo" id="rejilla-mapeo"></div>
+      <div class="fila" style="margin-top:18px">
+        <div class="campo" style="max-width:260px">
+          <label for="cv-demanda">Variabilidad de la demanda (CV)</label>
+          <input type="number" id="cv-demanda" min="0.1" max="2" step="0.1" value="0.5">
+        </div>
+        <div class="silencio" style="flex:1 1 280px">
+          Cuánto varía el consumo mes a mes. 0,3 = demanda pareja · 0,5 = típico en repuestos ·
+          1,0 o más = consumo errático. Sube el stock de seguridad.
+        </div>
+      </div>
+      <div id="aviso-mapeo"></div>
+    </div>
+
+    <div id="resultados" class="oculto" style="margin-top:34px"></div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="envoltura">
+    <h2>Qué hace exactamente</h2>
+    <p class="subtitulo">Nada de «criticidad a criterio del experto». Cuatro pasos, todos auditables.</p>
+    <div class="rejilla-kpi">
+      <div class="tarjeta">
+        <h3>1 · Pesos por entropía</h3>
+        <p class="silencio">El peso de cada criterio sale de la información que aporta tu propia
+        data (entropía de Shannon), no de una encuesta. Un criterio que no discrimina, no pesa.</p>
+      </div>
+      <div class="tarjeta">
+        <h3>2 · Ranking TOPSIS</h3>
+        <p class="silencio">Cada repuesto recibe un índice de criticidad entre 0 y 1 según su
+        distancia a la solución ideal y a la anti-ideal. Comparable entre plantas y en el tiempo.</p>
+      </div>
+      <div class="tarjeta">
+        <h3>3 · Familias por k-means</h3>
+        <p class="silencio">El portafolio se parte en familias homogéneas de precio, rotación y
+        lead time. El número de familias se elige por coeficiente de silueta, no a dedo.</p>
+      </div>
+      <div class="tarjeta">
+        <h3>4 · Política (R,S)</h3>
+        <p class="silencio">Cada clase recibe su nivel de servicio y periodo de revisión, y de ahí
+        salen el stock de seguridad, el nivel objetivo S y el capital que sobra o falta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="precio">
+  <div class="envoltura">
+    <h2>Precio</h2>
+    <p class="subtitulo">Pruébalo gratis con tus datos reales. Paga solo si el número que ves te sirve.</p>
+    <div class="rejilla-planes">
+      <div class="tarjeta plan">
+        <h3>Gratis</h3>
+        <div class="valor">US$0</div>
+        <div class="silencio">para siempre</div>
+        <ul>
+          <li>Hasta <strong id="limite-gratis">50</strong> repuestos por análisis</li>
+          <li>Criticidad, clases ABC y familias</li>
+          <li>Capital liberable y alertas de quiebre</li>
+          <li class="no">Sin exportación a Excel</li>
+          <li class="no">Sin análisis del maestro completo</li>
+        </ul>
+        <a href="#herramienta" class="boton boton-secundario">Probar ahora</a>
+      </div>
+      <div class="tarjeta plan recomendado">
+        <span class="cinta">RECOMENDADO</span>
+        <h3>Pro</h3>
+        <div class="valor" id="precio-pro">US$149</div>
+        <div class="silencio" id="precio-etiqueta">pago único</div>
+        <ul>
+          <li><strong>Repuestos ilimitados</strong> (maestros de 10.000+ SKU)</li>
+          <li>Exportación a Excel con 4 hojas de trabajo</li>
+          <li>Plan de acción por repuesto listo para bodega</li>
+          <li>Ajuste de supuestos y recálculo ilimitado</li>
+          <li>Actualizaciones incluidas</li>
+        </ul>
+        <a href="#" class="boton boton-primario" id="btn-comprar" target="_blank" rel="noopener">Comprar licencia</a>
+      </div>
+      <div class="tarjeta plan" id="plan-consultoria">
+        <h3>Implementación</h3>
+        <div class="valor">A convenir</div>
+        <div class="silencio">para tu planta</div>
+        <ul>
+          <li>Limpieza y validación de tu maestro</li>
+          <li>Parámetros calibrados con tu historial</li>
+          <li>Informe ejecutivo para el comité</li>
+          <li>Capacitación al equipo de bodega</li>
+        </ul>
+        <a href="#" class="boton boton-secundario" id="btn-agenda">Conversemos</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="envoltura">
+    <div class="entre">
+      <div>
+        <strong id="marca-pie">CritiSpare</strong> — criticidad de repuestos y política de inventario.<br>
+        <span class="silencio">Método: entropía de Shannon + TOPSIS + k-means + revisión periódica (R,S).</span>
+      </div>
+      <div class="silencio">Tus archivos se procesan en tu navegador. Nunca se suben.</div>
+    </div>
+  </div>
+</footer>
+
+<div class="velo oculto" id="velo-licencia">
+  <div class="tarjeta modal">
+    <h3>Activar licencia Pro</h3>
+    <p class="silencio">Pega la clave que recibiste al comprar. Queda guardada en este navegador.</p>
+    <input type="text" id="entrada-licencia" placeholder="Pega aquí tu clave de licencia" autocomplete="off">
+    <div id="aviso-licencia"></div>
+    <div class="fila" style="margin-top:16px">
+      <button class="boton boton-primario" id="btn-activar">Activar</button>
+      <button class="boton boton-secundario" id="btn-cerrar-licencia">Cancelar</button>
+      <button class="boton boton-secundario boton-fino" id="btn-demo-licencia" style="margin-left:auto">Usar licencia de demo</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

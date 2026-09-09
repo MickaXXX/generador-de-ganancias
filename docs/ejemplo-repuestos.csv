@@ -1,0 +1,121 @@
+SKU,Descripcion,Categoria,Precio unitario,Consumo anual,Lead time (dias),Criticidad equipo (1-5),Horas parada si falla,N proveedores,Stock actual
+SP-1000,Rodamiento rigido de bolas 6210,Rodamientos,60.3,77,8,4,29,3,16
+SP-1001,Rodamiento a rodillos conicos 32216,Rodamientos,274.24,14,26,3,29,1,0
+SP-1002,Sello mecanico bomba centrifuga 3x2,Sellos,392.53,40,38,5,22,1,0
+SP-1003,Sello mecanico cartucho API 682,Sellos,1523.87,16,65,5,14,1,9
+SP-1004,Correa en V C-120,Transmision,47.27,109,13,2,21,4,0
+SP-1005,Correa dentada HTD 8M-1600,Transmision,150.84,52,17,3,17,1,20
+SP-1006,Filtro hidraulico 10 micrones,Filtracion,78.28,41,17,3,10,4,6
+SP-1007,"Cartucho filtrante 5 um 40""",Filtracion,23.86,31,21,3,27,5,20
+SP-1008,Membrana osmosis inversa 8040,Tratamiento,832.45,17,93,5,42,1,11
+SP-1009,Resina cationica fuerte (saco 25L),Tratamiento,364.37,26,66,4,41,2,3
+SP-1010,Valvula mariposa DN150 wafer,Valvulas,690.89,30,44,4,30,3,15
+SP-1011,"Valvula de bola inox 2"" 3 piezas",Valvulas,251.71,18,24,3,6,4,3
+SP-1012,Actuador neumatico doble efecto,Valvulas,1059.94,16,34,4,37,2,12
+SP-1013,Motor electrico 15 kW 4 polos,Motores,2927.94,13,79,5,17,2,8
+SP-1014,Motor electrico 55 kW 4 polos,Motores,5966.68,9,91,5,53,1,5
+SP-1015,Bomba centrifuga 65-200 (repuesto),Bombas,6412.22,6,139,5,21,1,3
+SP-1016,Impulsor bomba 65-200,Bombas,1064.92,15,77,5,19,2,4
+SP-1017,Variador de frecuencia 22 kW,Electrico,2593.69,3,51,5,15,1,2
+SP-1018,Contactor tripolar 65 A,Electrico,100.75,62,15,3,17,4,18
+SP-1019,Rele termico 30-40 A,Electrico,100.51,40,15,3,23,4,12
+SP-1020,Tarjeta PLC entradas analogicas,Instrumentos,1107.82,21,74,5,49,1,8
+SP-1021,Transmisor de presion 0-10 bar,Instrumentos,432.51,33,35,4,24,3,16
+SP-1022,Sensor de flujo electromagnetico DN80,Instrumentos,2135.86,16,81,5,39,1,8
+SP-1023,Sensor de nivel ultrasonico,Instrumentos,996.97,16,61,4,34,2,3
+SP-1024,"Manguera hidraulica R2 1"" (metro)",Fluidos,26.13,63,10,1,3,5,33
+SP-1025,Acople flexible tipo grilla,Transmision,248.02,39,25,3,34,2,23
+SP-1026,Empaquetadura grafitada (kg),Sellos,83.71,53,30,2,12,3,24
+SP-1027,Piston neumatico ISO 63x200,Neumatica,435.34,15,30,3,31,3,0
+SP-1028,Electrovalvula 5/2 24 VDC,Neumatica,139.25,61,20,3,35,4,0
+SP-1029,Compresor de aire (kit reparacion),Neumatica,1790.55,17,67,5,37,2,8
+SP-1030,Reductor de velocidad i=20,Transmision,5907.07,5,121,5,55,1,2
+SP-1031,Chumacera SNL 517,Rodamientos,316.91,10,41,3,33,2,2
+SP-1032,Bomba dosificadora de diafragma,Dosificacion,2336.48,9,72,4,47,1,0
+SP-1033,Diafragma PTFE bomba dosificadora,Dosificacion,211.04,21,39,4,28,3,3
+SP-1034,Manometro glicerina 0-16 bar,Instrumentos,51.09,46,8,2,18,5,0
+SP-1035,Kit retenes caja reductora,Transmision,147.99,26,31,3,31,3,6
+SP-1036,Cadena de rodillos ASA 80 (metro),Transmision,45.55,44,22,2,14,4,6
+SP-1037,"Pinon Z=25 paso 1""",Transmision,251.44,15,21,3,13,3,2
+SP-1038,Ventilador axial 400 mm,Ventilacion,377.91,23,61,3,23,2,0
+SP-1039,Intercambiador de placas (placa),Termico,125.33,62,55,4,11,2,13
+SP-1040,Rodamiento rigido de bolas 6210 (var. 2),Rodamientos,122.09,28,10,4,22,2,16
+SP-1041,Rodamiento a rodillos conicos 32216 (var. 2),Rodamientos,316.53,31,26,3,27,2,11
+SP-1042,Sello mecanico bomba centrifuga 3x2 (var. 2),Sellos,515.72,20,31,5,40,1,10
+SP-1043,Sello mecanico cartucho API 682 (var. 2),Sellos,1652.57,10,95,5,30,1,0
+SP-1044,Correa en V C-120 (var. 2),Transmision,43.02,26,11,2,12,4,13
+SP-1045,Correa dentada HTD 8M-1600 (var. 2),Transmision,182.15,12,25,3,29,2,4
+SP-1046,Filtro hidraulico 10 micrones (var. 2),Filtracion,54.58,65,19,3,34,4,9
+SP-1047,"Cartucho filtrante 5 um 40"" (var. 2)",Filtracion,20.56,59,22,3,6,5,15
+SP-1048,Membrana osmosis inversa 8040 (var. 2),Tratamiento,767.57,18,94,5,45,1,0
+SP-1049,Resina cationica fuerte (saco 25L) (var. 2),Tratamiento,246.52,37,49,4,41,2,19
+SP-1050,Valvula mariposa DN150 wafer (var. 2),Valvulas,605.68,22,51,4,32,3,10
+SP-1051,"Valvula de bola inox 2"" 3 piezas (var. 2)",Valvulas,273.24,33,30,3,11,4,5
+SP-1052,Actuador neumatico doble efecto (var. 2),Valvulas,1253.78,13,35,4,41,2,0
+SP-1053,Motor electrico 15 kW 4 polos (var. 2),Motores,3025.03,4,71,5,26,2,0
+SP-1054,Motor electrico 55 kW 4 polos (var. 2),Motores,5910.8,2,79,5,46,1,1
+SP-1055,Bomba centrifuga 65-200 (repuesto) (var. 2),Bombas,7976.79,7,126,5,24,1,3
+SP-1056,Impulsor bomba 65-200 (var. 2),Bombas,1414.54,14,89,5,22,2,2
+SP-1057,Variador de frecuencia 22 kW (var. 2),Electrico,4060.66,3,63,5,27,1,3
+SP-1058,Contactor tripolar 65 A (var. 2),Electrico,154.06,20,22,3,12,3,4
+SP-1059,Rele termico 30-40 A (var. 2),Electrico,79.88,14,13,3,25,3,3
+SP-1060,Tarjeta PLC entradas analogicas (var. 2),Instrumentos,1523.76,13,117,5,46,1,6
+SP-1061,Transmisor de presion 0-10 bar (var. 2),Instrumentos,668.31,29,51,4,36,3,10
+SP-1062,Sensor de flujo electromagnetico DN80 (var. 2),Instrumentos,2939.9,3,68,5,39,1,1
+SP-1063,Sensor de nivel ultrasonico (var. 2),Instrumentos,1168.88,4,71,4,31,1,0
+SP-1064,"Manguera hidraulica R2 1"" (metro) (var. 2)",Fluidos,16.28,144,7,1,9,4,76
+SP-1065,Acople flexible tipo grilla (var. 2),Transmision,286.72,28,43,3,34,3,18
+SP-1066,Empaquetadura grafitada (kg) (var. 2),Sellos,126.95,28,21,2,14,4,13
+SP-1067,Piston neumatico ISO 63x200 (var. 2),Neumatica,445,29,33,3,25,3,0
+SP-1068,Electrovalvula 5/2 24 VDC (var. 2),Neumatica,173.22,30,26,3,28,3,12
+SP-1069,Compresor de aire (kit reparacion) (var. 2),Neumatica,2328.08,12,104,5,22,1,5
+SP-1070,Reductor de velocidad i=20 (var. 2),Transmision,4208.52,11,121,5,15,1,2
+SP-1071,Chumacera SNL 517 (var. 2),Rodamientos,514.1,16,28,3,30,3,0
+SP-1072,Bomba dosificadora de diafragma (var. 2),Dosificacion,2075.68,4,40,4,33,2,0
+SP-1073,Diafragma PTFE bomba dosificadora (var. 2),Dosificacion,303.12,14,36,4,32,2,3
+SP-1074,Manometro glicerina 0-16 bar (var. 2),Instrumentos,37.59,96,7,2,23,5,34
+SP-1075,Kit retenes caja reductora (var. 2),Transmision,171.91,39,17,3,25,3,0
+SP-1076,Cadena de rodillos ASA 80 (metro) (var. 2),Transmision,52.47,83,10,2,23,4,17
+SP-1077,"Pinon Z=25 paso 1"" (var. 2)",Transmision,201.36,31,39,3,8,3,5
+SP-1078,Ventilador axial 400 mm (var. 2),Ventilacion,516.85,18,55,3,21,2,10
+SP-1079,Intercambiador de placas (placa) (var. 2),Termico,153.59,55,37,4,23,2,21
+SP-1080,Rodamiento rigido de bolas 6210 (var. 3),Rodamientos,66.13,89,8,4,41,2,43
+SP-1081,Rodamiento a rodillos conicos 32216 (var. 3),Rodamientos,230.95,29,20,3,12,1,5
+SP-1082,Sello mecanico bomba centrifuga 3x2 (var. 3),Sellos,381.33,41,41,5,14,2,24
+SP-1083,Sello mecanico cartucho API 682 (var. 3),Sellos,2589.77,15,75,5,51,1,0
+SP-1084,Correa en V C-120 (var. 3),Transmision,28.41,33,6,2,8,4,13
+SP-1085,Correa dentada HTD 8M-1600 (var. 3),Transmision,183.58,25,26,3,14,2,13
+SP-1086,Filtro hidraulico 10 micrones (var. 3),Filtracion,83.7,84,9,3,30,4,7
+SP-1087,"Cartucho filtrante 5 um 40"" (var. 3)",Filtracion,31.03,123,12,3,10,4,27
+SP-1088,Membrana osmosis inversa 8040 (var. 3),Tratamiento,716.98,13,90,5,10,2,3
+SP-1089,Resina cationica fuerte (saco 25L) (var. 3),Tratamiento,431.75,29,46,4,39,2,0
+SP-1090,Valvula mariposa DN150 wafer (var. 3),Valvulas,667.83,18,30,4,30,2,3
+SP-1091,"Valvula de bola inox 2"" 3 piezas (var. 3)",Valvulas,226.51,38,29,3,19,4,21
+SP-1092,Actuador neumatico doble efecto (var. 3),Valvulas,897.08,7,37,4,13,2,3
+SP-1093,Motor electrico 15 kW 4 polos (var. 3),Motores,1715.51,12,65,5,16,2,0
+SP-1094,Motor electrico 55 kW 4 polos (var. 3),Motores,9278.14,6,80,5,39,1,2
+SP-1095,Bomba centrifuga 65-200 (repuesto) (var. 3),Bombas,4535.63,10,157,5,34,1,6
+SP-1096,Impulsor bomba 65-200 (var. 3),Bombas,1190.14,17,90,5,60,2,6
+SP-1097,Variador de frecuencia 22 kW (var. 3),Electrico,2172.76,15,114,5,24,1,5
+SP-1098,Contactor tripolar 65 A (var. 3),Electrico,118.35,69,16,3,22,4,29
+SP-1099,Rele termico 30-40 A (var. 3),Electrico,57.85,47,11,3,23,4,1
+SP-1100,Tarjeta PLC entradas analogicas (var. 3),Instrumentos,1052.34,12,133,5,39,1,5
+SP-1101,Transmisor de presion 0-10 bar (var. 3),Instrumentos,508.58,19,30,4,13,3,4
+SP-1102,Sensor de flujo electromagnetico DN80 (var. 3),Instrumentos,2131.13,16,51,5,17,1,0
+SP-1103,Sensor de nivel ultrasonico (var. 3),Instrumentos,793.09,28,68,4,27,2,10
+SP-1104,"Manguera hidraulica R2 1"" (metro) (var. 3)",Fluidos,26.68,40,8,1,3,5,0
+SP-1105,Acople flexible tipo grilla (var. 3),Transmision,262.88,47,18,3,24,3,0
+SP-1106,Empaquetadura grafitada (kg) (var. 3),Sellos,116.33,57,17,2,5,4,12
+SP-1107,Piston neumatico ISO 63x200 (var. 3),Neumatica,435.63,36,34,3,26,3,13
+SP-1108,Electrovalvula 5/2 24 VDC (var. 3),Neumatica,157.82,57,13,3,33,4,18
+SP-1109,Compresor de aire (kit reparacion) (var. 3),Neumatica,1693.6,11,71,5,40,2,5
+SP-1110,Reductor de velocidad i=20 (var. 3),Transmision,3400.11,6,111,5,37,1,3
+SP-1111,Chumacera SNL 517 (var. 3),Rodamientos,499.61,29,39,3,33,3,0
+SP-1112,Bomba dosificadora de diafragma (var. 3),Dosificacion,2452.64,16,64,4,27,2,5
+SP-1113,Diafragma PTFE bomba dosificadora (var. 3),Dosificacion,147.81,19,31,4,20,3,0
+SP-1114,Manometro glicerina 0-16 bar (var. 3),Instrumentos,51.23,34,11,2,16,4,13
+SP-1115,Kit retenes caja reductora (var. 3),Transmision,222.71,20,17,3,27,3,10
+SP-1116,Cadena de rodillos ASA 80 (metro) (var. 3),Transmision,49.08,47,16,2,23,4,16
+SP-1117,"Pinon Z=25 paso 1"" (var. 3)",Transmision,268.68,39,40,3,9,3,13
+SP-1118,Ventilador axial 400 mm (var. 3),Ventilacion,451.62,15,27,3,11,2,0
+SP-1119,Intercambiador de placas (placa) (var. 3),Termico,156.6,47,54,4,37,2,12
