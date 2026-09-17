@@ -224,6 +224,28 @@ es más rápida.
 
 ---
 
+## 3.bis Estado: ya está construido
+
+El diseño de arriba está implementado y funcionando en `replicador/`. Ver
+`replicador/README.md` para el detalle de uso.
+
+Lo que quedó hecho:
+
+- App local con los dos botones pedidos, en `http://127.0.0.1:4310`.
+- Tres modos: demo sin red, papel con datos reales, dinero real.
+- Decodificación por deltas de balance, escalado por fracción sin oráculo de
+  precios, filtros anti-trampa, trailing stop propio y cortacircuitos.
+- 35 pruebas del motor y 20 verificaciones manejando la interfaz en Chromium.
+
+Lo que quedó sin probar contra la red, porque la política de egreso del entorno
+bloquea `fomo.family`, los RPC de Solana, Jupiter y DexScreener: las llamadas
+HTTP del ejecutor real, la suscripción por WebSocket y la resolución automática
+del perfil. Están escritas y su lógica de parseo sí está cubierta con respuestas
+inyectadas, pero la primera operación con dinero hay que verificarla a mano en
+un explorador de bloques.
+
+---
+
 ## 4. Ruta de cuatro fines de semana
 
 | Fin de semana | Entrega | Riesgo de capital |

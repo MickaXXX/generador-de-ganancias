@@ -26,6 +26,7 @@ el costo de infraestructura: el sitio es estático y se aloja gratis.
 | `scripts/licencia.mjs` | Emite licencias firmadas desde la línea de comandos. |
 | `test/` | Pruebas del motor, de licencias, de la interfaz en navegador real y del Excel. |
 | `LANZAMIENTO.md` | El plan comercial: qué hacer, en qué orden, con los textos ya escritos. |
+| `replicador/` | App local que replica las operaciones de un trader de FOMO. Ver [`replicador/README.md`](replicador/README.md) y [`REPLICADOR-FOMO.md`](REPLICADOR-FOMO.md). |
 
 ---
 

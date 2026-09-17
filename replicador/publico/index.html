@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Replicador FOMO</title>
+<link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+<main>
+  <header class="cabecera">
+    <div>
+      <h1>Replicador de transacciones</h1>
+      <p class="sub">Replica las operaciones de un trader de FOMO en tu billetera, escaladas a tu presupuesto.</p>
+    </div>
+    <div id="insignia-modo" class="insignia insignia--sombra">MODO DEMO</div>
+  </header>
+
+  <section class="tarjeta">
+    <span class="titulo-campo">Modo</span>
+    <div class="segmentado" id="segmentado">
+      <label><input type="radio" name="modo" value="demo" checked>
+        <span><strong>Demo sin red</strong><small>Cadena inventada. Para probar la app.</small></span></label>
+      <label><input type="radio" name="modo" value="papel">
+        <span><strong>Papel con datos reales</strong><small>Sus operaciones de verdad, sin gastar.</small></span></label>
+      <label><input type="radio" name="modo" value="real">
+        <span><strong>Dinero real</strong><small>Firma y gasta de tu billetera.</small></span></label>
+    </div>
+    <p id="aviso-modo" class="aviso-linea"></p>
+  </section>
+
+  <section class="tarjeta">
+    <label class="campo">
+      <span>Trader a replicar</span>
+      <div class="fila">
+        <input id="trader" type="text" placeholder="Perfil de FOMO o dirección de la billetera" spellcheck="false">
+        <button id="btn-resolver" class="btn btn--fantasma" type="button">Resolver</button>
+      </div>
+      <small id="estado-trader" class="pista"></small>
+    </label>
+
+    <div class="rejilla-campos">
+      <label class="campo"><span>Presupuesto (SOL)</span><input id="presupuestoSol" type="number" step="0.01" min="0.01"></label>
+      <label class="campo"><span>Máx. por token</span><input id="maxFraccionPorToken" type="number" step="0.05" min="0.01" max="1"></label>
+      <label class="campo"><span>Máx. posiciones</span><input id="maxPosiciones" type="number" step="1" min="1"></label>
+      <label class="campo"><span>Trailing stop</span><input id="trailingStop" type="number" step="0.05" min="0.05" max="0.95"></label>
+      <label class="campo"><span>Corte drawdown</span><input id="maxDrawdownDiario" type="number" step="0.05" min="0.05" max="0.95"></label>
+      <label class="campo"><span>Liquidez mín. USD</span><input id="liquidezMinimaUsd" type="number" step="1000" min="0"></label>
+    </div>
+  </section>
+
+  <section class="controles">
+    <button id="btn-correr" class="btn btn--correr" type="button">
+      <span class="punto"></span> Correr réplica de transacciones del usuario
+    </button>
+    <button id="btn-detener" class="btn btn--detener" type="button" disabled>
+      Detener automatización
+    </button>
+  </section>
+
+  <p id="error" class="error" hidden></p>
+
+  <section class="rejilla-metricas">
+    <div class="metrica"><span class="etiqueta">Valor total</span><strong id="m-valor">—</strong><small id="m-rend"></small></div>
+    <div class="metrica"><span class="etiqueta">SOL disponible</span><strong id="m-sol">—</strong></div>
+    <div class="metrica"><span class="etiqueta">Operaciones copiadas</span><strong id="m-copiadas">—</strong><small id="m-omitidas"></small></div>
+    <div class="metrica"><span class="etiqueta">Drawdown</span><strong id="m-dd">—</strong><small id="m-stops"></small></div>
+  </section>
+
+  <section class="paneles">
+    <div class="tarjeta panel">
+      <h2>Posiciones abiertas</h2>
+      <table class="tabla"><thead><tr><th>Token</th><th class="num">Costo</th><th class="num">Valor</th><th class="num">Resultado</th></tr></thead>
+      <tbody id="tbody-posiciones"><tr class="vacio"><td colspan="4">Ninguna posición abierta.</td></tr></tbody></table>
+    </div>
+
+    <div class="tarjeta panel">
+      <h2>Registro en vivo</h2>
+      <div id="registro" class="registro"><p class="vacio">El registro aparece al arrancar la réplica.</p></div>
+    </div>
+  </section>
+
+  <footer class="pie">
+    La clave privada nunca pasa por esta página. Se lee de <code>replicador/.clave</code> o de la
+    variable <code>CLAVE_PRIVADA</code> en esta máquina. Ningún campo de esta interfaz la acepta.
+  </footer>
+</main>
+<script src="/app.js" type="module"></script>
+</body>
+</html>

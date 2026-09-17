@@ -1,7 +1,7 @@
 {
   "name": "critispare",
   "version": "1.0.0",
-  "description": "Motor de criticidad de repuestos (Entropia + TOPSIS + k-means) y micro-SaaS estatica.",
+  "description": "Motor de criticidad de repuestos (Entropia + TOPSIS + k-means), micro-SaaS estatica y replicador de transacciones de FOMO.",
   "type": "module",
   "private": true,
   "scripts": {
@@ -12,11 +12,18 @@
     "producto": "python3 scripts/generar_kit_excel.py 60",
     "licencia:par": "node scripts/licencia.mjs generar-par",
     "licencia:emitir": "node scripts/licencia.mjs emitir",
-    "servir": "node -e \"const{createServer}=require('node:http'),{readFile}=require('node:fs/promises'),{join,extname}=require('node:path');const T={'.html':'text/html','.js':'text/javascript','.css':'text/css','.csv':'text/csv'};createServer(async(q,r)=>{try{const f=join('docs',q.url==='/'?'index.html':decodeURIComponent(q.url.split('?')[0]));const c=await readFile(f);r.writeHead(200,{'Content-Type':T[extname(f)]||'application/octet-stream'});r.end(c)}catch{r.writeHead(404).end()}}).listen(8080,()=>console.log('http://localhost:8080'))\""
+    "servir": "node -e \"const{createServer}=require('node:http'),{readFile}=require('node:fs/promises'),{join,extname}=require('node:path');const T={'.html':'text/html','.js':'text/javascript','.css':'text/css','.csv':'text/csv'};createServer(async(q,r)=>{try{const f=join('docs',q.url==='/'?'index.html':decodeURIComponent(q.url.split('?')[0]));const c=await readFile(f);r.writeHead(200,{'Content-Type':T[extname(f)]||'application/octet-stream'});r.end(c)}catch{r.writeHead(404).end()}}).listen(8080,()=>console.log('http://localhost:8080'))\"",
+    "replicador": "node replicador/servidor.mjs",
+    "test:replicador": "node --test test/replicador-*.test.mjs",
+    "test:replicador:e2e": "node test/replicador.e2e.mjs"
   },
   "license": "MIT",
   "devDependencies": {
     "playwright": "^1.49.1",
     "xlsx": "^0.18.5"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0"
   }
 }

@@ -1,3 +1,9 @@
 node_modules/
 .claves/
 capturas/*.xlsx
+
+# Replicador: nada que toque una clave privada o la configuracion real
+# de una billetera entra nunca al repositorio.
+replicador/.clave
+replicador/config.json
+replicador/registro-*.jsonl

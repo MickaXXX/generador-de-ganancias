@@ -1,0 +1,21 @@
+{
+  "trader": "https://fomo.family/profile/DumbCrayonEater",
+
+  "cadena": "simulada",
+  "ejecucion": "sombra",
+
+  "presupuestoSol": 0.5,
+  "maxFraccionPorToken": 0.25,
+  "minOrdenSol": 0.02,
+  "maxPosiciones": 5,
+
+  "liquidezMinimaUsd": 25000,
+  "edadMinimaPoolMin": 30,
+  "trailingStop": 0.35,
+  "maxDrawdownDiario": 0.20,
+  "listaNegra": [],
+
+  "retrasoEstimadoMs": 1200,
+  "rpc": "https://api.mainnet-beta.solana.com",
+  "rpcWs": ""
+}
