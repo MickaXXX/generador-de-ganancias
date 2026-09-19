@@ -1,0 +1,22 @@
+{
+  "name": "copiabot",
+  "version": "1.0.0",
+  "description": "Bot de Telegram que copia de forma proporcional las compras y ventas de wallets de Solana que tu elijas.",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/index.js",
+    "wallet:nueva": "node src/cli/wallet.js nueva",
+    "wallet:importar": "node src/cli/wallet.js importar",
+    "wallet:ver": "node src/cli/wallet.js ver",
+    "diagnostico": "node src/cli/diagnostico.js",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0",
+    "grammy": "^1.46.0"
+  },
+  "license": "MIT"
+}

@@ -26,6 +26,7 @@ el costo de infraestructura: el sitio es estático y se aloja gratis.
 | `scripts/licencia.mjs` | Emite licencias firmadas desde la línea de comandos. |
 | `test/` | Pruebas del motor, de licencias, de la interfaz en navegador real y del Excel. |
 | `LANZAMIENTO.md` | El plan comercial: qué hacer, en qué orden, con los textos ya escritos. |
+| `bot/` | **Copiabot**: bot de Telegram que copia compras y ventas de wallets de Solana de forma proporcional. Proyecto aparte, con su propio README. |
 
 ---
 
